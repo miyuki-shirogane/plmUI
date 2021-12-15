@@ -1,14 +1,17 @@
 import time
 
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
-
 from pageObject.base_page import BasePage
 from utils.mock import Mock
 
 
 class MaterialManagePage(BasePage):
+
     _base_url = "https://comba-test.teletraan.io/subapp/plm/base/material"
+
+
 
     # 创建物料时，新增表单中根据物料属性不同，物料类型提供options不同；根据传入参数选取第n个属性，然后返回所有类别options
     def create_material_form_get_category(self, pick_num_material_form:int):
@@ -40,26 +43,26 @@ class MaterialManagePage(BasePage):
         time.sleep(1)
         return material_name
 
-    def get_material_new(self):
+    def get_material_n_column_value(self, n: int):
         try:
-            get_material_name_ele = self.driver.find_element(By.XPATH, '//tr/td[1]')
-            get_material_name = get_material_name_ele.text
-            return get_material_name
+            get_material_column_ele = self.driver.find_element(By.XPATH, f'//tr/td[{n}]')
+            get_material_column_value = get_material_column_ele.text
+            return get_material_column_value
         except:
             raise NoSuchElementException('Seems create material failed')
 
-    def update_material_get_name(self):
-        try:
-            mock = Mock()
-            material_name = mock.mock_data("name")  # 名称
-            self.driver.find_element(By.XPATH, '//tbody/tr[1]//button[@title="查看详情"]').click()
-            self.driver.find_element(By.XPATH, '//button[span="编辑物料"]').click()
-            self.driver.find_element(By.XPATH, '//input[@name="name"]').send_keys(material_name)
-            self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
-            return material_name
-            time.sleep(1)
-        except:
-            raise NoSuchElementException('Might has no material available to update')
+    def update_material_get_name(self, column: str):
+        mock = Mock()
+        material_column = mock.mock_data(column)  # 名称
+        self.driver.find_element(By.XPATH, '//tbody/tr[1]//button[@title="查看详情"]').click()
+        time.sleep(1)
+        self.driver.find_element(By.XPATH, '//button[span="编辑物料"]').click()
+        clear_ele = self.driver.find_element(By.XPATH, f'//input[@name="{column}"]')
+        self.new_clear(clear_ele)
+        self.driver.find_element(By.XPATH, f'//input[@name="{column}"]').send_keys(material_column)
+        self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
+        return material_column
+        time.sleep(1)
 
     def delete_material(self):
         self.driver.implicitly_wait(5)

@@ -1,8 +1,8 @@
 import time
 from selenium import webdriver
+from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
-from utils.mock import Mock
 
 
 class BasePage:
@@ -45,3 +45,11 @@ class BasePage:
         from pageObject.project_page import ProjectPage
         time.sleep(1)
         return ProjectPage(self.driver)
+
+    @staticmethod
+    def new_clear(element):
+        """清空输入框内容，部分使用clear没有用，使用这种方法可以"""
+        element.clear()
+        element.send_keys(Keys.ARROW_DOWN)
+        while element.get_attribute("value"):
+            element.send_keys(Keys.BACKSPACE)

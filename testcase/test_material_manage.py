@@ -18,20 +18,20 @@ class TestMaterial:
         actual_options = self.mat_mng.goto_material_category().get_materials_category_search(pick_num_category_filter=n)
         category_options = self.mat_mng.goto_material_manage().create_material_form_get_category(
             pick_num_material_form=n)
-        logging.info(f'count_before_delete:{actual_options};count_after_delete:{category_options}')
+        logging.info(f'actual_options:{actual_options};category_options:{category_options}')
         assert_that(actual_options, equal_to(category_options))
 
     def test_create_material(self):
         create_name = self.mat_mng.create_material_get_name()
-        get_name = self.mat_mng.get_material_new()
-        logging.info(f'count_before_delete:{create_name};count_after_delete:{get_name}')
+        get_name = self.mat_mng.get_material_n_column_value(1)
+        logging.info(f'create_name:{create_name};get_name:{get_name}')
         assert_that(create_name, equal_to(get_name))
 
     def test_update_material(self):
-        update_name = self.mat_mng.update_material_get_name()
-        get_name = self.mat_mng.get_material_new()
-        logging.info(f'count_before_delete:{update_name};count_after_delete:{get_name}')
-        assert_that(update_name, equal_to(get_name))
+        update_column_value = self.mat_mng.update_material_get_name("specification")
+        get_column_value = self.mat_mng.goto_material_manage().get_material_n_column_value(7)
+        logging.info(f'update_column_value:{update_column_value};get_column_value:{get_column_value}')
+        assert_that(update_column_value, equal_to(get_column_value))
 
     """
     这一块比较复杂，删除的产品设计逻辑如下：
@@ -39,14 +39,24 @@ class TestMaterial:
     2.如果物料没有被引用，那么可以正常删除。
     -------------
     于是，这里的测试用例预备分为2个处理：
-    1.创建物料A，删除，预期删除成功，断言方式就看物料list个数吧。。
-    2。创建项目(新品研发)并新增产品（物料B），删除，预期删除失败，断言方式同上
+    1.case_a:创建物料A，删除，预期删除成功，断言方式就看物料list个数吧
+    2.case_b:创建项目(新品研发)并新增产品（物料B），删除，预期删除失败，断言方式同上
     """
+    def test_delete_material_a(self):
+        self.mat_mng.create_material_get_name()
+        time.sleep(1)
+        count_before_delete = self.mat_mng.get_count_of_material()
+        self.mat_mng.delete_material()
+        time.sleep(1)
+        count_after_delete = self.mat_mng.get_count_of_material()
+        logging.info(f'count_before_delete:{count_before_delete};count_after_delete:{count_after_delete}')
+        assert_that(count_before_delete-1, equal_to(count_after_delete))
+
     def test_delete_material_b(self):
         # 前置条件
         project_name = self.mat_mng.goto_project().create_project_get_name()
         self.mat_mng.goto_project().add_product_to_project(project_name)
-        time.sleep(5)
+        time.sleep(2)
         count_before_delete = self.mat_mng.goto_material_manage().get_count_of_material()
         # 删除操作
         self.mat_mng.delete_material()
