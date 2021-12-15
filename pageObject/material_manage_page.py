@@ -19,7 +19,7 @@ class MaterialManagePage(BasePage):
         self.driver.find_element(By.XPATH, '//div[label="*物料名称"]/ancestor::div//input[@name="category"]').click()
 
         options = [i.text for i in self.driver.find_elements(By.XPATH, '//div[@class="MuiAutocomplete-popper"]//li')]
-        self.driver.find_element(By.XPATH, '//button[span="取消"]')
+        self.driver.find_element(By.XPATH, '//button[span="取消"]').click()
         return options
 
     def create_material_get_name(self):
@@ -37,7 +37,7 @@ class MaterialManagePage(BasePage):
         self.driver.find_element(By.XPATH, '//div[label="*物料名称"]/ancestor::div//input[@name="property"]').click() #物料属性
         self.driver.find_element(By.XPATH, '//div[@class="MuiAutocomplete-popper"]//li[1]').click()
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
-        time.sleep(3)
+        time.sleep(1)
         return material_name
 
     def get_material_new(self):
@@ -57,17 +57,17 @@ class MaterialManagePage(BasePage):
             self.driver.find_element(By.XPATH, '//input[@name="name"]').send_keys(material_name)
             self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
             return material_name
-            time.sleep(3)
+            time.sleep(1)
         except:
             raise NoSuchElementException('Might has no material available to update')
 
     def delete_material(self):
-        # try:
         self.driver.implicitly_wait(5)
         self.driver.find_element(By.XPATH, '//tbody/tr[1]//button[@title="删除"]').click()
-        time.sleep(3)
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
-        after_delete_name = self.driver.find_element(By.XPATH, '//tr/td[1]').text
-        return after_delete_name
-        # except:
-        #     raise NoSuchElementException('Might has no material available to delete')
+        time.sleep(3)
+
+    def get_count_of_material(self):
+        self.driver.implicitly_wait(5)
+        count = self.driver.find_element(By.XPATH, '//span[contains(text(),"共")]').text[2: -2]
+        return int(count)

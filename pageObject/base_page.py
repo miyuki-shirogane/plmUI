@@ -1,8 +1,8 @@
 import time
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
+from utils.mock import Mock
 
 
 class BasePage:
@@ -31,11 +31,17 @@ class BasePage:
     def goto_material_manage(self):
         self.driver.find_element(By.XPATH,"//ul/div[5]//div[@role='button'][1]").click()
         from pageObject.material_manage_page import MaterialManagePage
-        time.sleep(3)
+        time.sleep(1)
         return MaterialManagePage(self.driver)
 
     def goto_material_category(self):
         self.driver.find_element(By.XPATH,"//ul/div[5]//div[@role='button'][2]").click()
         from pageObject.material_category_page import MaterialCategoryPage
-        time.sleep(3)
+        time.sleep(1)
         return MaterialCategoryPage(self.driver)
+
+    def goto_project(self):
+        self.driver.find_element(By.XPATH, "//ul/div[1]").click()
+        from pageObject.project_page import ProjectPage
+        time.sleep(1)
+        return ProjectPage(self.driver)
