@@ -4,10 +4,9 @@ from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
 
-
 class BasePage:
 
-    def __init__(self,base_driver = None):
+    def __init__(self, base_driver = None):
         _base_url = None
 
         if base_driver:

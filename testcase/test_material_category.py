@@ -5,6 +5,7 @@ class TestCreateMaterialCategory:
     def setup_class(self):
         self.mat_cg = MaterialCategoryPage()
 
+    #测试下contributions会不会绿
     def test(self):
         pass
 
