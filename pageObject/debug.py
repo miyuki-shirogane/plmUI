@@ -28,8 +28,4 @@ def Clear(element):
 
 def test():
     driver = get_driver()
-    ele = driver.find_element(By.XPATH, '//input[@name="specification"]')
-    print(ele.text)
-    ele.send_keys("sadasdasd")
-    Clear(ele)
-    # print(ele.clear())
+    driver.find_element(By.XPATH, '//input[@name="name"]/ancestor::div//button[@type="submit"]').click()

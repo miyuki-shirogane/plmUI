@@ -45,6 +45,10 @@ class BasePage:
         time.sleep(1)
         return ProjectPage(self.driver)
 
+    def get_count_of_table(self):
+        count = self.driver.find_element(By.XPATH, '//span[contains(text(),"共")]').text[2: -2]
+        return int(count)
+
     @staticmethod
     def new_clear(element):
         """清空输入框内容，部分使用clear没有用，使用这种方法可以"""

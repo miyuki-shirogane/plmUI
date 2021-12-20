@@ -6,7 +6,7 @@ import logging
 import time
 import pytest
 from hamcrest import *
-from pageObject.material_manage_page import MaterialManagePage
+from pageObject.material_manage_page import MaterialManagePage, MaterialType
 
 
 class TestMaterial:
@@ -45,10 +45,10 @@ class TestMaterial:
     def test_delete_material_a(self):
         self.mat_mng.create_material_get_name()
         time.sleep(1)
-        count_before_delete = self.mat_mng.get_count_of_material()
+        count_before_delete = self.mat_mng.get_count_of_table()
         self.mat_mng.delete_material()
         time.sleep(1)
-        count_after_delete = self.mat_mng.get_count_of_material()
+        count_after_delete = self.mat_mng.get_count_of_table()
         logging.info(f'count_before_delete:{count_before_delete};count_after_delete:{count_after_delete}')
         assert_that(count_before_delete-1, equal_to(count_after_delete))
 
@@ -57,10 +57,10 @@ class TestMaterial:
         project_name = self.mat_mng.goto_project().create_project_get_name()
         self.mat_mng.goto_project().add_product_to_project(project_name)
         time.sleep(2)
-        count_before_delete = self.mat_mng.goto_material_manage().get_count_of_material()
+        count_before_delete = self.mat_mng.goto_material_manage().get_count_of_table()
         # 删除操作
         self.mat_mng.delete_material()
-        count_after_delete = self.mat_mng.get_count_of_material()
+        count_after_delete = self.mat_mng.get_count_of_table()
         logging.info(f'count_before_delete:{count_before_delete};count_after_delete:{count_after_delete}')
         assert_that(count_before_delete, equal_to(count_after_delete))
 
