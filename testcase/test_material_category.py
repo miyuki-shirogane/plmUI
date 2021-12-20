@@ -17,5 +17,16 @@ class TestCreateMaterialCategory:
         get_name = self.mat_cg.get_first_material_category_name()
         assert_that(get_name, equal_to(update_name))
 
+    """
+    物料类别的删除也包含一些校验逻辑；需要2个cases来验证：
+    caseA：创建物料类别、删除。删除成功
+    caseB：创建物料类别、创建物料并引用之、删除。删除失败
+    """
+    def test_delete_material_category_a(self):
+        pass
+
+    def test_delete_material_category_b(self):
+        pass
+
     def teardown(self):
         self.mat_cg.driver.quit()
