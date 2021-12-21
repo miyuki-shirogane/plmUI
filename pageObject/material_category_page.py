@@ -32,9 +32,6 @@ class MaterialCategoryPage(BasePage):
         first_material_category_name = self.driver.find_element(By.XPATH, '//tr[1]/td[2]').text
         return first_material_category_name
 
-    def get_material_category_num(self):
-        pass
-
     # 更新第一个物料类别的名称
     def update_material_category_get_name(self):
         mock = Mock()

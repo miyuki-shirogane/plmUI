@@ -6,7 +6,7 @@ import logging
 import time
 import pytest
 from hamcrest import *
-from pageObject.material_manage_page import MaterialManagePage, MaterialType
+from pageObject.material_manage_page import MaterialManagePage
 
 
 class TestMaterial:

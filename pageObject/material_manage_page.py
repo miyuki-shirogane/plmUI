@@ -20,6 +20,7 @@ class MaterialManagePage(BasePage):
         self.driver.find_element(By.XPATH, '//button[span="取消"]').click()
         return options
 
+    # 物料属性：产品，物料类别：Null。建一个 完事
     def create_material_get_name(self):
         mock = Mock()
         material_name = mock.mock_data("name")  # 名称
@@ -62,3 +63,24 @@ class MaterialManagePage(BasePage):
         self.driver.find_element(By.XPATH, '//tbody/tr[1]//button[@title="删除"]').click()
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
         time.sleep(3)
+
+    # 为了验证物料类型删除的反向用例，专门写一个创建指定类别的物料函数;会有重复代码，后面再想办法优化吧。。
+    def create_material_of_specified_category(self, category: str):
+        mock = Mock()
+        material_name = mock.mock_data("name")  # 名称
+        material_code = mock.mock_data("code")  # 编号
+        material_version = mock.mock_data("version")  # 版本
+        material_unit = mock.mock_data("unit")  # 计量单位
+        self.driver.find_element(By.XPATH, '//button[span="新增物料"]').click()
+        self.driver.find_element(By.XPATH, '//input[@name="name"]').send_keys(material_name)
+        self.driver.find_element(By.XPATH, '//input[@name="code"]').send_keys(material_code)
+        self.driver.find_element(By.XPATH, '//input[@name="versions"]').send_keys(material_version)
+        self.driver.find_element(By.XPATH, '//input[@name="unit"]').send_keys(material_unit)
+        self.driver.find_element(By.XPATH,
+                                 '//div[label="*物料名称"]/ancestor::div//input[@name="property"]').click()  # 物料属性
+        self.driver.find_element(By.XPATH, '//div[@class="MuiAutocomplete-popper"]//li[1]').click()
+        self.driver.find_element(By.XPATH, '//input[@name="category"]').click()
+        self.driver.find_element(By.XPATH, f'//span[contains(text(), "{category}")]').click()
+        self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
+        time.sleep(3)
+        return material_name

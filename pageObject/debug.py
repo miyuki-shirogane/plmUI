@@ -28,5 +28,5 @@ def Clear(element):
 
 def test():
     driver = get_driver()
-    driver.find_element(By.XPATH, '//tr[1]/td[3]//button[@title="删除"]').click()
-    driver.find_element(By.XPATH, '//button[span="确定"]').click()
+    driver.find_element(By.XPATH, '//input[@name="category"]').click()
+    driver.find_element(By.XPATH, '//span[contains(text(),"productType")]').click()
