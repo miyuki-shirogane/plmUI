@@ -23,13 +23,13 @@ class TestMaterial:
 
     def test_create_material(self):
         create_name = self.mat_mng.create_material_get_name()
-        get_name = self.mat_mng.get_material_n_column_value(1)
+        get_name = self.mat_mng.get_list_n_column_value(1)
         logging.info(f'create_name:{create_name};get_name:{get_name}')
         assert_that(create_name, equal_to(get_name))
 
     def test_update_material(self):
         update_column_value = self.mat_mng.update_material_get_name("specification")
-        get_column_value = self.mat_mng.goto_material_manage().get_material_n_column_value(7)
+        get_column_value = self.mat_mng.goto_material_manage().get_list_n_column_value(7)
         logging.info(f'update_column_value:{update_column_value};get_column_value:{get_column_value}')
         assert_that(update_column_value, equal_to(get_column_value))
 
@@ -54,7 +54,7 @@ class TestMaterial:
 
     def test_delete_material_b(self):
         # 前置条件
-        project_name = self.mat_mng.goto_project().create_project_get_name()
+        project_name = self.mat_mng.goto_project().create_project_get_name(project_category="新品定制")
         self.mat_mng.goto_project().add_product_to_project(project_name)
         time.sleep(2)
         count_before_delete = self.mat_mng.goto_material_manage().get_count_of_table()

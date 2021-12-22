@@ -6,7 +6,7 @@ class TestProject:
         self.pro_mng = ProjectPage()
 
     def test_create_project(self):
-        res = self.pro_mng.create_project_get_name()
+        res = self.pro_mng.create_project_get_name(project_category="新品定制")
         print(res)
 
     # def test_1(self):

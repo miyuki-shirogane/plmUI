@@ -36,7 +36,7 @@ class TestCreateMaterialCategory:
 
     def test_delete_material_category_b(self):
         category_name = self.mat_cg.create_material_category_get_name(1)
-        self.mat_cg.goto_material_manage().create_material_of_specified_category(category_name)
+        self.mat_cg.goto_material_manage().create_material_of_specified_category(category=category_name)
         time.sleep(2)
         count_before_delete = self.mat_cg.goto_material_category().get_count_of_table()
         self.mat_cg.delete_material_category()

@@ -8,9 +8,10 @@ from utils.mock import Mock
 class ProjectPage(BasePage):
     _base_url = 'https://comba-test.teletraan.io/subapp/plm/project'
 
-    def create_project_get_name(self):
-        self.driver.implicitly_wait(5)
+    def create_project_get_name(self, project_category: str):
         mock = Mock()
+        plan_date = mock.current_date()
+        create_project_attachment = mock.attachment_path(attachment_name="create_project.jpeg")
         project_name = mock.mock_data("project_name")
         project_code = mock.mock_data("project_code")
         self.driver.find_element(By.XPATH, '//button[span="项目立项"]').click()
@@ -19,7 +20,12 @@ class ProjectPage(BasePage):
         self.driver.find_element(By.XPATH, '//div[label="*项目名称"]/ancestor::div//input[@name="projectGroup"]').click()
         self.driver.find_element(By.XPATH, '//div[@class="MuiAutocomplete-popper"]//li[1]').click()
         self.driver.find_element(By.XPATH, '//div[label="*项目名称"]/ancestor::div//input[@name="category"]').click()
-        self.driver.find_element(By.XPATH, '//div[@class="MuiAutocomplete-popper"]//li[1]').click()
+        self.driver.find_element(By.XPATH, f'//span[contains(text(),"{project_category}")]').click()
+        self.driver.find_element(By.XPATH,
+                                 '//label[contains(text(),"计划开始日期")]/parent::div//input').send_keys(plan_date)
+        ele = self.driver.find_element(By.XPATH, '//label[contains(text(),"立项文档")]/parent::div//input')
+        ele.send_keys(create_project_attachment)
+        time.sleep(2)
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
         time.sleep(1)
         return project_name

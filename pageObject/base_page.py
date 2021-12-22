@@ -49,6 +49,12 @@ class BasePage:
         count = self.driver.find_element(By.XPATH, '//span[contains(text(),"共")]').text[2: -2]
         return int(count)
 
+    # 查询返回第一行数据第n个column的value
+    def get_list_n_column_value(self, n: int):
+        get_material_column_ele = self.driver.find_element(By.XPATH, f'//tr[1]/td[{n}]')
+        get_material_column_value = get_material_column_ele.text
+        return get_material_column_value
+
     @staticmethod
     def new_clear(element):
         """清空输入框内容，部分使用clear没有用，使用这种方法可以"""

@@ -26,7 +26,7 @@ def Clear(element):
         element.send_keys(Keys.BACKSPACE)
 
 
-def test():
+def test(name = "新品定制"):
     driver = get_driver()
-    driver.find_element(By.XPATH, '//input[@name="category"]').click()
-    driver.find_element(By.XPATH, '//span[contains(text(),"productType")]').click()
+    ele = driver.find_element(By.XPATH, '//label[contains(text(),"立项文档")]/parent::div//input')
+    ele.send_keys("/Users/yilin/desktop/hayasaka.jpeg")

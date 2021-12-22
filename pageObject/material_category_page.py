@@ -7,6 +7,7 @@ from utils.mock import Mock
 class MaterialCategoryPage(BasePage):
     _base_url = "https://comba-test.teletraan.io/subapp/plm/base/category"
 
+    # 选物料属性，创建物料类别
     def create_material_category_get_name(self, pick_num_category_form:int):
         mock = Mock()
         category_name = mock.mock_data('category_name')

@@ -39,12 +39,6 @@ class MaterialManagePage(BasePage):
         time.sleep(3)
         return material_name
 
-    # 查询返回第一行数据第n个column的value
-    def get_material_n_column_value(self, n: int):
-        get_material_column_ele = self.driver.find_element(By.XPATH, f'//tr[1]/td[{n}]')
-        get_material_column_value = get_material_column_ele.text
-        return get_material_column_value
-
     # 更新第一个物料的指定字段，传入参数就是它滴英文名
     def update_material_get_name(self, column: str):
         mock = Mock()
