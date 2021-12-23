@@ -5,12 +5,23 @@ from selenium.webdriver.common.by import By
 
 
 class BasePage:
+    _base_url = None
+    # 当子类没有构造函数的时候，在实例化的过程中，会自动父类的构造函数
+    # 所以，每个PO 在实例化过程中，都会执行构造函数的逻辑
+    # 问题： 如何避免driver 的重复实例化
 
-    def __init__(self, base_driver = None):
-        _base_url = None
-
+    def __init__(self, base_driver=None):
+        """
+        告诉父类的构造函数，如果传参了，不需要进行重复的实例化操作
+        如果没有传参， 那么就是第一次的实例化操作，需要进行实例化
+        :param base_driver:
+        """
+        # 如果base_driver 为真， 为真就是不等于None，那么就不需要重复实例化的操作
         if base_driver:
+            # 非第一次实例化操作
+            # 为了保证，后面的子类在使用的过程中，都具有driver属性，所以需要做赋值操作
             self.driver = base_driver
+        # 如果base_driver 为None/假， 那么就需要对Driver进行实例化
         else:
             self.driver = webdriver.Chrome()
             self.driver.implicitly_wait(10)
