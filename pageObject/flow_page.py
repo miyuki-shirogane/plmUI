@@ -6,11 +6,13 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 from seletools.actions import drag_and_drop
 from pageObject.base_page import BasePage
+from utils.env import Environment
 from utils.mock import Mock
 
 
 class FlowPage(BasePage):
-    _base_url = "https://comba-test.teletraan.io/subapp/plm/base/flow"
+    env = Environment()
+    _base_url = env.url(module="flow")
 
     """
     这里我让它做的事情如下：

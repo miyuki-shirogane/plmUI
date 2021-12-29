@@ -3,6 +3,8 @@ from selenium import webdriver
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
+from utils.env import Environment
+
 
 class BasePage:
     _base_url = None
@@ -25,27 +27,28 @@ class BasePage:
         else:
             self.driver = webdriver.Chrome()
             self.driver.implicitly_wait(10)
-            if self._base_url != None:
+            if self._base_url is not None:
                 self.driver.get(self._base_url)
-                self.driver.find_element(By.XPATH,"//input[@name='account']").send_keys("Caitlyn")
-                self.driver.find_element(By.XPATH, "//input[@name='password']").send_keys("Caitlyn")
-                self.driver.find_element(By.CSS_SELECTOR,".MuiButton-label").click()
+                env = Environment()
+                self.driver.find_element(By.XPATH, "//input[@name='account']").send_keys(env.account())
+                self.driver.find_element(By.XPATH, "//input[@name='password']").send_keys(env.password())
+                self.driver.find_element(By.CSS_SELECTOR, ".MuiButton-label").click()
             else:
                 pass
 
-    def goto_BOM(self):
-        self.driver.find_element(By.XPATH,"//ul/div[2]").click()
+    def goto_bom(self):
+        self.driver.find_element(By.XPATH, "//ul/div[2]").click()
         from pageObject.bom_page import BOMPage
         return BOMPage(self.driver)
 
     def goto_material_manage(self):
-        self.driver.find_element(By.XPATH,"//ul/div[5]//div[@role='button'][1]").click()
+        self.driver.find_element(By.XPATH, "//ul/div[5]//div[@role='button'][1]").click()
         from pageObject.material_manage_page import MaterialManagePage
         time.sleep(1)
         return MaterialManagePage(self.driver)
 
     def goto_material_category(self):
-        self.driver.find_element(By.XPATH,"//ul/div[5]//div[@role='button'][2]").click()
+        self.driver.find_element(By.XPATH, "//ul/div[5]//div[@role='button'][2]").click()
         from pageObject.material_category_page import MaterialCategoryPage
         time.sleep(1)
         return MaterialCategoryPage(self.driver)

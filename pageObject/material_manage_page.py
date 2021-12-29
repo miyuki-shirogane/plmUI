@@ -1,11 +1,13 @@
 import time
 from selenium.webdriver.common.by import By
 from pageObject.base_page import BasePage
+from utils.env import Environment
 from utils.mock import Mock
 
 
 class MaterialManagePage(BasePage):
-    _base_url = "https://comba-test.teletraan.io/subapp/plm/base/material"
+    env = Environment()
+    _base_url = env.url(module="material")
 
     # 创建物料时，新增表单中根据物料属性不同，物料类型提供options不同；根据传入参数选取第n个属性，然后返回所有类别options
     def create_material_form_get_category(self, pick_num_material_form: int):

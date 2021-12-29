@@ -1,0 +1,47 @@
+from selenium.webdriver import ActionChains
+from selenium.webdriver.common.by import By
+
+from pageObject.base_page import BasePage
+from utils.env import Environment
+from utils.mock import Mock
+
+
+class GroupSettingPage(BasePage):
+    env = Environment()
+    _base_url = env.url(module="projectGroup")
+
+    def add_group(self):
+        mock = Mock()
+        group_name = mock.mock_data(data_name="group")
+        self.driver.find_element(By.XPATH, '//*[name()="svg"][@title="新增小组"]').click()
+        self.driver.find_element(By.XPATH, '//input[@name="name"]').send_keys(group_name)
+        self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
+        return group_name
+
+    # 就是加第一个人员
+    def add_member(self):
+        self.driver.find_element(By.XPATH, '//button[span="配置组员"]').click()
+        self.driver.find_element(
+            By.XPATH, '//div[h4="配置组员"]/ancestor::div//tbody/tr[1]//button'
+        ).click()
+        self.driver.find_element(By.XPATH, '//div[h4="配置组员"]/button').click()
+        ele = self.driver.find_element(
+            By.XPATH, '//div[h4="配置组员"]/ancestor::div//tbody/tr[1]//td[1]'
+        )
+        return ele.text
+
+    # 这个表格最新的记录新增在底部，所以不用base_page的通用method
+    def get_new_member(self):
+        ele = self.driver.find_element(By.XPATH, f'//tr[last()]/td[1]')
+        return ele.text
+
+    def delete_member(self):
+        self.driver.find_element(By.XPATH, '//tbody/tr[1]//button').click()
+
+    def delete_group(self):
+        ele = self.driver.find_element(By.XPATH, '//div[h6="小组列表"]/following-sibling::div[2]/div[1]')
+        text = ele.text
+        ActionChains(self.driver).move_to_element(ele).perform()
+        ele.find_element_by_xpath(
+            "./following-sibling::div//*[name()='svg'][@title='删除']"
+        ).click()

@@ -51,7 +51,10 @@ def test():
 
 def test_1():
     driver = get_driver()
-    ele = driver.find_element(By.XPATH, '//p[1]')
+    ele = driver.find_element(By.XPATH, '//div[h6="小组列表"]/following-sibling::div[2]/div[1]')
+    text = ele.text
     ActionChains(driver).move_to_element(ele).perform()
-    driver.find_element(By.XPATH, '//*[name()="svg"][@title="删除"]').click()
+    # ele.find_element_by_xpath(
+    #     "./following-sibling::div//*[name()='svg'][@title='删除']"
+    # ).click()
 

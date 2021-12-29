@@ -2,11 +2,13 @@ import time
 
 from selenium.webdriver.common.by import By
 from pageObject.base_page import BasePage
+from utils.env import Environment
 from utils.mock import Mock
 
 
 class ProjectPage(BasePage):
-    _base_url = 'https://comba-test.teletraan.io/subapp/plm/project'
+    env = Environment()
+    _base_url = env.url(module="project")
 
     def create_project_get_name(self, project_category: str):
         mock = Mock()

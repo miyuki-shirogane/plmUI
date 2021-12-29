@@ -1,11 +1,13 @@
 import time
 from selenium.webdriver.common.by import By
 from pageObject.base_page import BasePage
+from utils.env import Environment
 from utils.mock import Mock
 
 
 class MaterialCategoryPage(BasePage):
-    _base_url = "https://comba-test.teletraan.io/subapp/plm/base/category"
+    env = Environment()
+    _base_url = env.url(module="category")
 
     # 选物料属性，创建物料类别
     def create_material_category_get_name(self, pick_num_category_form:int):
