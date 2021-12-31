@@ -9,6 +9,7 @@ import time
 
 from selenium import webdriver
 from selenium.webdriver import Keys, ActionChains
+from selenium.webdriver.support.wait import WebDriverWait
 from seletools.actions import drag_and_drop
 from selenium.webdriver.common.by import By
 
@@ -49,12 +50,13 @@ def test():
     path2 = driver.find_element(By.XPATH, '//p[contains(text(),"设定任务")]/following-sibling::div[2]/div')
     drag_and_drop(driver, path1, path2)
 
-def test_1():
+
+def test_1(operate="删除"):
     driver = get_driver()
     ele = driver.find_element(By.XPATH, '//div[h6="小组列表"]/following-sibling::div[2]/div[1]')
     text = ele.text
     ActionChains(driver).move_to_element(ele).perform()
-    # ele.find_element_by_xpath(
-    #     "./following-sibling::div//*[name()='svg'][@title='删除']"
-    # ).click()
-
+    ele.find_element_by_xpath(
+        f"./following-sibling::div//*[name()='svg'][@title='{operate}']"
+    ).click()
+    WebDriverWait(driver, 10).until(lambda x: ele.text != text)

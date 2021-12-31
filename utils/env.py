@@ -5,9 +5,7 @@ root_path = os.path.abspath(os.path.join(os.getcwd(), ".."))
 configPath = os.path.join(root_path, "utils/env.ini")
 cf = configparser.ConfigParser()
 cf.read(configPath, encoding='UTF-8')
-"""
-环境配置在这行⬇️
-"""
+
 pick = cf.get("pick", "env")
 environment = cf.get(pick, "env")
 account = cf.get(pick, "account")
