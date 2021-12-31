@@ -1,6 +1,6 @@
 import time
-
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
 from pageObject.base_page import BasePage
 from utils.env import Environment
 from utils.mock import Mock
@@ -10,6 +10,7 @@ class ProjectPage(BasePage):
     env = Environment()
     _base_url = env.url(module="project")
 
+    # 就是options里面的中文string，比如 project_category="新品定制"
     def create_project_get_name(self, project_category: str):
         mock = Mock()
         plan_date = mock.current_date()
@@ -27,7 +28,9 @@ class ProjectPage(BasePage):
                                  '//label[contains(text(),"计划开始日期")]/parent::div//input').send_keys(plan_date)
         ele = self.driver.find_element(By.XPATH, '//label[contains(text(),"立项文档")]/parent::div//input')
         ele.send_keys(create_project_attachment)
-        time.sleep(2)
+        WebDriverWait(self.driver, 10).until(
+            lambda x: len(self.driver.find_elements(By.XPATH, '//div[label="立项文档"]//img')) > 1
+        )
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
         time.sleep(1)
         return project_name
@@ -48,4 +51,7 @@ class ProjectPage(BasePage):
         self.driver.find_element(By.XPATH, '//button[span="保存"]').click()
         time.sleep(1)
 
-
+    def add_task_to_project(self, pro_name: str):
+        detail_enter_xpath = f'//td[text()="{pro_name}"]/ancestor::tr//button[@title="查看详情"]'
+        self.driver.find_element(By.XPATH, detail_enter_xpath).click()
+        self.driver.find_element(By.XPATH, '//button[span="研发任务"]').click()

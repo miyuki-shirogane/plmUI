@@ -9,6 +9,7 @@ import time
 
 from selenium import webdriver
 from selenium.webdriver import Keys, ActionChains
+from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 from seletools.actions import drag_and_drop
 from selenium.webdriver.common.by import By
@@ -51,12 +52,21 @@ def test():
     drag_and_drop(driver, path1, path2)
 
 
-def test_1(operate="删除"):
+def test_1():
     driver = get_driver()
-    ele = driver.find_element(By.XPATH, '//div[h6="小组列表"]/following-sibling::div[2]/div[1]')
-    text = ele.text
-    ActionChains(driver).move_to_element(ele).perform()
-    ele.find_element_by_xpath(
-        f"./following-sibling::div//*[name()='svg'][@title='{operate}']"
-    ).click()
-    WebDriverWait(driver, 10).until(lambda x: ele.text != text)
+    driver.find_element(By.XPATH, '//div[label="*项目名称"]/ancestor::div//input[@name="category"]').click()
+    driver.find_element(By.XPATH, f'//span[contains(text(),"新品定制")]').click()
+    WebDriverWait(driver, 10).until(expected_conditions.element_to_be_clickable((By.XPATH, '//button[span="确定"]')))
+    driver.find_element(By.XPATH, '//button[span="确定"]').click()
+    time.sleep(5)
+    ele = driver.find_element(By.XPATH, '//tr[1]/td[1]')
+    res = ele.text
+    WebDriverWait(driver, 10).until(lambda x: ele.text != res)
+    print(res)
+
+
+def test_2():
+    driver = get_driver()
+    WebDriverWait(driver, 10).until(
+        lambda x: len(driver.find_elements(By.XPATH, '//div[label="立项文档"]//img')) > 1
+    )

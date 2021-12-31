@@ -10,7 +10,8 @@ from pageObject.material_manage_page import MaterialManagePage
 
 
 class TestMaterial:
-    def setup(self):
+    def setup_class(self):
+        print("setup")
         self.mat_mng = MaterialManagePage()
 
     @pytest.mark.parametrize("n", [1, 2, 3, 4], ids=["产品", "原辅料", "中间体", "菌种"])
@@ -64,5 +65,5 @@ class TestMaterial:
         logging.info(f'count_before_delete:{count_before_delete};count_after_delete:{count_after_delete}')
         assert_that(count_before_delete, equal_to(count_after_delete))
 
-    def teardown(self):
+    def teardown_class(self):
         self.mat_mng.driver.quit()
