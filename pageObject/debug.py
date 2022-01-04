@@ -70,3 +70,21 @@ def test_2():
     WebDriverWait(driver, 10).until(
         lambda x: len(driver.find_elements(By.XPATH, '//div[label="立项文档"]//img')) > 1
     )
+
+
+def test_3():
+    driver = get_driver()
+    eles = '//div[h6="小组列表"]/following-sibling::div[2]/div'
+    res = [i.text for i in driver.find_elements(By.XPATH, eles)]
+    print(res)
+
+
+def test_4():
+    driver = get_driver()
+    eles = driver.find_element(By.XPATH, '//button[@title="查看详情"]')
+    print(eles)
+
+
+
+
+

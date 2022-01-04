@@ -45,6 +45,11 @@ class GroupSettingPage(BasePage):
         text = ele.text
         return text
 
+    def get_all_groups(self):
+        eles = '//div[h6="小组列表"]/following-sibling::div[2]/div'
+        groups = [i.text for i in self.driver.find_elements(By.XPATH, eles)]
+        return groups
+
     def delete_member(self):
         self.driver.find_element(By.XPATH, '//tbody/tr[1]//button').click()
 

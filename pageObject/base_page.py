@@ -63,11 +63,17 @@ class BasePage:
         count = self.driver.find_element(By.XPATH, '//span[contains(text(),"共")]').text[2: -2]
         return int(count)
 
-    # 查询返回第一行数据第n个column的value
-    def get_list_n_column_value(self, n: int):
-        get_material_column_ele = self.driver.find_element(By.XPATH, f'//tr[1]/td[{n}]')
-        get_material_column_value = get_material_column_ele.text
-        return get_material_column_value
+    # 查询返回第一行数据第n个column的value;理论上n要填写的是int型，但考虑到可能会有"最后一个元素"这种特殊需求，所以不限制数据类型
+    def get_list_n_column_value(self, n):
+        get_column_ele = self.driver.find_element(By.XPATH, f'//tr[1]/td[{n}]')
+        get_column_value = get_column_ele.text
+        return get_column_value
+
+    # 获取alert信息
+    def get_alert(self):
+        ele = self.driver.find_element(By.XPATH, '//div[@class="MuiAlert-message"]')
+        alert = ele.text
+        return alert
 
     @staticmethod
     def new_clear(element):
