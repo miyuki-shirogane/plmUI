@@ -1,4 +1,5 @@
 import time
+from random import randint
 
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
@@ -35,8 +36,9 @@ class ProjectPage(BasePage):
         self.driver.find_element(By.XPATH, '//div[@class="MuiAutocomplete-popper"]//li[1]').click()
         self.driver.find_element(By.XPATH, '//div[label="*项目名称"]/ancestor::div//input[@name="category"]').click()
         self.driver.find_element(By.XPATH, f'//span[contains(text(),"{project_category}")]').click()
-        self.driver.find_element(By.XPATH,
-                                 '//label[contains(text(),"计划开始日期")]/parent::div//input').send_keys(plan_date)
+        self.driver.find_element(
+            By.XPATH, '//label[contains(text(),"计划开始日期")]/parent::div//input'
+                                 ).send_keys(plan_date)
         ele = self.driver.find_element(By.XPATH, '//label[contains(text(),"立项文档")]/parent::div//input')
         ele.send_keys(create_project_attachment)
         WebDriverWait(self.driver, 10).until(
@@ -66,7 +68,6 @@ class ProjectPage(BasePage):
         self.driver.find_element(By.XPATH, '//input[@name="versions"]').send_keys(material_version)
         self.driver.find_element(By.XPATH, '//input[@name="unit"]').send_keys(material_unit)
         self.driver.find_element(By.XPATH, '//button[span="保存"]').click()
-        self.driver.find_element(By.XPATH, '//li[button="项目管理"]').click()
         time.sleep(1)
 
     # 填写新增任务表单时的操作元素对象
@@ -98,7 +99,6 @@ class ProjectPage(BasePage):
         self._fill_task_form(label_name="预计开始日期").send_keys(task_date)
         self._fill_task_form(label_name="预计结束日期").send_keys(task_date)
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
-        self.driver.find_element(By.XPATH, '//li[button="项目管理"]').click()
 
     def get_first_task_of_project(self, pro_name: str):
         self._go_to_detail_tab(pro_name=pro_name, tab_name="研发任务")
@@ -123,7 +123,6 @@ class ProjectPage(BasePage):
         self.driver.find_element(By.XPATH, '//*[name()="svg"][@title="新增BOM"]').click()
         self.driver.find_element(By.XPATH, '//input[@name="versions"]').send_keys(bom_version)
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
-        self.driver.find_element(By.XPATH, '//li[button="项目管理"]').click()
         return bom_version
 
     def update_bom(self, pro_name: str):
@@ -140,7 +139,6 @@ class ProjectPage(BasePage):
         self.new_clear(input_ele)
         input_ele.send_keys(bom_version)
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
-        self.driver.find_element(By.XPATH, '//li[button="项目管理"]').click()
         return bom_version
 
     def delete_bom(self, pro_name: str):
@@ -152,12 +150,11 @@ class ProjectPage(BasePage):
         ActionChains(self.driver).move_to_element(ele).perform()
         ele.find_element(By.XPATH, './/*[name()="svg"][@title="删除"]').click()
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
-        self.driver.find_element(By.XPATH, '//li[button="项目管理"]').click()
 
-    def edit_material_of_bom(self, pro_name: str, add_time: int, delete_time: int):
+    def edit_material_of_bom(self, pro_name: str, add_times: int, delete_times: int):
         self._go_to_detail_tab(pro_name=pro_name, tab_name="研发任务")
         self.driver.find_element(By.XPATH, '//tr[1]/td[last()]//button[@title="查看详情"]').click()
-        for i in range(add_time):
+        for i in range(add_times):
             self.driver.find_element(
                 By.XPATH, '//h4[contains(text(),"物料列表")]/following-sibling::button[1]'
             ).click()
@@ -166,15 +163,67 @@ class ProjectPage(BasePage):
             ele = self.driver.find_element(By.XPATH, '//button[span="确定"]')
             self.driver.execute_script("arguments[0].click();", ele)
             i += 1
-        for i in range(delete_time):
+        for i in range(delete_times):
             time.sleep(1)
             self.driver.find_element(By.XPATH, '//tr[1]/td[last()]//button[@title="删除"]').click()
             ele = self.driver.find_element(By.XPATH, '//button[span="确定"]')
             self.driver.execute_script("arguments[0].click();", ele)
             i += 1
 
+    def fill_bom(self, pro_name: str, num_of_material: int):
+        mock = Mock()
+        proportion = randint(1, 10)
+        research_unit = mock.mock_data("research_unit")
+        self._go_to_detail_tab(pro_name=pro_name, tab_name="研发任务")
+        self.driver.find_element(By.XPATH, '//tr[1]/td[last()]//button[@title="查看详情"]').click()
+        for i in range(num_of_material):
+            self.driver.find_element(By.XPATH, f'//tbody/tr[{i+1}]//td[9]').send_keys(proportion)
+            self.driver.find_element(By.XPATH, f'//tbody/tr[{i+1}]//td[10]').send_keys(research_unit)
+        self.driver.find_element(By.XPATH, '//button[span="保存配方"]').click()
+
+    def task_attachment(self, pro_name: str):
+        mock = Mock()
+        task_attachment = mock.attachment_path(attachment_name="task.jpeg")
+        self._go_to_detail_tab(pro_name=pro_name, tab_name="研发任务")
+        self.driver.find_element(By.XPATH, '//tr[1]/td[last()]//button[@title="查看详情"]').click()
+        ele = self.driver.find_element(By.XPATH, '//input[@type="file"]')
+        ele.send_keys(task_attachment)
+        WebDriverWait(self.driver, 10).until(
+            lambda x: len(self.driver.find_elements(
+                By.XPATH, '//input[@type="file"]/parent::label/preceding-sibling::div//img'
+            )) > 0
+        )
+        self.driver.find_element(By.XPATH, '//button[span="保存附件"]').click()
+
+    def status_pending_to_inprocess(self, pro_name: str):
+        self._go_to_detail_tab(pro_name=pro_name, tab_name="研发产品")
+        self.driver.find_element(By.XPATH, '//button[span="启动项目"]').click()
+
+    def status_inprocess_to_ended(self, pro_name: str, is_bom_released: bool):
+        mock = Mock()
+        description = mock.mock_data(data_name="description")
+        end_project_attachment = mock.attachment_path("end.jpg")
+        self._go_to_detail_tab(pro_name=pro_name, tab_name="研发产品")
+        self.driver.find_element(By.XPATH, '//button[span="完结项目"]').click()
+        self.driver.find_element(By.XPATH, '//input[@name="description"]').send_keys(description)
+        ele = self.driver.find_element(By.XPATH, '//input[@type="file"]')
+        ele.send_keys(end_project_attachment)
+        WebDriverWait(self.driver, 10).until(
+            lambda x: len(self.driver.find_elements(
+                By.XPATH, '//input[@type="file"]/parent::label/preceding-sibling::div//img'
+            )) > 0
+        )
+        # 结项。填完结项说明、添加完文档后，依据是否有定版BOM，验证后面的页面交互
+        if is_bom_released is True:
+            self.driver.find_element(By.XPATH, '//input[@name=""bom]').click()
+            self.driver.find_element(By.XPATH, '//div[@class="MuiAutocomplete-popper"]//li[1]').click()
+        else:
+            pass
+        self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
+
 
 if __name__ == "__main__":
     ck = ProjectPage()
-    ck.edit_material_of_bom(pro_name="project_name_70SIK8")
+    ck.task_attachment(pro_name="project_name_70SIK8")
+    # ck.edit_material_of_bom(pro_name="project_name_70SIK8", add_times=2, delete_times=0)
     # ck.add_task_to_project(pro_name="project_name_BmZgac", flow_name="flow_name_5b7cqm")

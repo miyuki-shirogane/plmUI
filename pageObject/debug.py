@@ -6,7 +6,6 @@
 # Author     ：10
 """
 import time
-
 from selenium import webdriver
 from selenium.webdriver import Keys, ActionChains
 from selenium.webdriver.support import expected_conditions
@@ -81,8 +80,6 @@ def test_3():
 
 def test_4():
     driver = get_driver()
-    eles = driver.find_element(By.XPATH, '//button[@title="查看详情"]')
-    print(eles)
 
 
 

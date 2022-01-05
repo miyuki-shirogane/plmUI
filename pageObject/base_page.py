@@ -59,6 +59,11 @@ class BasePage:
         time.sleep(1)
         return ProjectPage(self.driver)
 
+    def goto_file(self):
+        self.driver.find_element(By.XPATH, "//ul/div[3]").click()
+        from pageObject.document_page import DocumentPage
+        return DocumentPage(self.driver)
+
     def get_count_of_table(self):
         count = self.driver.find_element(By.XPATH, '//span[contains(text(),"共")]').text[2: -2]
         return int(count)
@@ -74,6 +79,14 @@ class BasePage:
         ele = self.driver.find_element(By.XPATH, '//div[@class="MuiAlert-message"]')
         alert = ele.text
         return alert
+
+    # 监听当前页面dialog数量
+    def detect_num_of_dialog(self, expect: int):
+        eles = self.driver.find_elements(By.XPATH, '//div[@role="dialog"]')
+        if len(eles) == expect:
+            return True
+        else:
+            return False
 
     @staticmethod
     def new_clear(element):
