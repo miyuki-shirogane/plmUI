@@ -1,5 +1,7 @@
 import time
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+
 from pageObject.base_page import BasePage
 from utils.env import Environment
 from utils.mock import Mock
@@ -19,7 +21,12 @@ class MaterialCategoryPage(BasePage):
             .click()
         self.driver.find_element(By.XPATH, '//input[@name="name"]').send_keys(category_name)
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
-        time.sleep(2)
+        try:
+            ele = self.driver.find_element(By.XPATH, '//tr[1]/td[1]')
+            text = ele.text
+            WebDriverWait(self.driver, 10).until(lambda x: ele.text != text)
+        except:
+            time.sleep(3)
         return category_name
 
     # filter="物料属性"，list搜索，获取返回物料类别列表

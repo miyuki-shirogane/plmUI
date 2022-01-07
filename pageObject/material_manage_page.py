@@ -1,5 +1,7 @@
 import time
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+
 from pageObject.base_page import BasePage
 from utils.env import Environment
 from utils.mock import Mock
@@ -38,7 +40,12 @@ class MaterialManagePage(BasePage):
                                  '//div[label="*物料名称"]/ancestor::div//input[@name="property"]').click()  # 物料属性
         self.driver.find_element(By.XPATH, '//div[@class="MuiAutocomplete-popper"]//li[1]').click()
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
-        time.sleep(3)
+        try:
+            ele = self.driver.find_element(By.XPATH, '//tr[1]/td[1]')
+            text = ele.text
+            WebDriverWait(self.driver, 10).until(lambda x: ele.text != text)
+        except:
+            time.sleep(3)
         return material_name
 
     # 更新第一个物料的指定字段，传入参数就是它滴英文名

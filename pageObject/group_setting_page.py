@@ -1,3 +1,5 @@
+import time
+
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -18,9 +20,12 @@ class GroupSettingPage(BasePage):
         self.driver.find_element(By.XPATH, '//*[name()="svg"][@title="新增小组"]').click()
         self.driver.find_element(By.XPATH, '//input[@name="name"]').send_keys(group_name)
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
-        ele = self.driver.find_element(By.XPATH, '//tr[last()]/td[1]')
-        text = ele.text
-        WebDriverWait(self.driver, 10).until(lambda x: ele.text != text)
+        try:
+            ele = self.driver.find_element(By.XPATH, '//div[h6="小组列表"]/following-sibling::div[2]/div[1]')
+            text = ele.text
+            WebDriverWait(self.driver, 10).until(lambda x: ele.text != text)
+        except:
+            time.sleep(3)
         return group_name
 
     # 就是加第一个人员

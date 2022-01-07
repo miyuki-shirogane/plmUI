@@ -46,6 +46,12 @@ class ProjectPage(BasePage):
         )
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
         time.sleep(1)
+        try:
+            ele = self.driver.find_element(By.XPATH, '//tr[1]/td[1]')
+            text = ele.text
+            WebDriverWait(self.driver, 10).until(lambda x: ele.text != text)
+        except:
+            time.sleep(3)
         return project_name
 
     # 创建项目表单，执行小组下拉选项获取
@@ -56,19 +62,31 @@ class ProjectPage(BasePage):
         self.driver.find_element(By.XPATH, '//button[span="取消"]').click()
         return options
 
-    def add_product_to_project(self, pro_name: str):
+    def add_product_to_project(self, pro_name: str, pro_category: str):
         mock = Mock()
         material_name = mock.mock_data("name")  # 名称
         material_code = mock.mock_data("code")  # 编号
         material_version = mock.mock_data("version")  # 版本
         material_unit = mock.mock_data("unit")  # 计量单位
         self._go_to_detail_tab(pro_name=pro_name, tab_name="研发产品")
-        self.driver.find_element(By.XPATH, '//input[@name="name"]').send_keys(material_name)
-        self.driver.find_element(By.XPATH, '//input[@name="code"]').send_keys(material_code)
-        self.driver.find_element(By.XPATH, '//input[@name="versions"]').send_keys(material_version)
-        self.driver.find_element(By.XPATH, '//input[@name="unit"]').send_keys(material_unit)
+        if pro_category == "新品定制" or "内部研发":
+            self.driver.find_element(By.XPATH, '//input[@name="name"]').send_keys(material_name)
+            self.driver.find_element(By.XPATH, '//input[@name="code"]').send_keys(material_code)
+            self.driver.find_element(By.XPATH, '//input[@name="versions"]').send_keys(material_version)
+            self.driver.find_element(By.XPATH, '//input[@name="unit"]').send_keys(material_unit)
+        elif pro_category == "工艺优化":
+            self.driver.find_element(By.XPATH, '//input[@name="product"]').click()
+            self.driver.find_element(By.XPATH, '//div[@class="MuiAutocomplete-popper"]//li[1]').click()
+            self.driver.find_element(By.XPATH, '//input[@name="versions"]').send_keys(material_version)
         self.driver.find_element(By.XPATH, '//button[span="保存"]').click()
         time.sleep(1)
+
+    # 前置条件：project_category = 工艺优化
+    def get_product_options(self, pro_name: str):
+        self._go_to_detail_tab(pro_name=pro_name, tab_name="研发产品")
+        self.driver.find_element(By.XPATH, '//input[@name="product"]').click()
+        options = [i.text for i in self.driver.find_elements(By.XPATH, '//div[@class="MuiAutocomplete-popper"]//li')]
+        return options
 
     # 填写新增任务表单时的操作元素对象
     def _fill_task_form(self, label_name: str):

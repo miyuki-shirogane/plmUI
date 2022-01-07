@@ -56,7 +56,7 @@ class TestMaterial:
     def test_delete_material_b(self):
         # 前置条件
         project_name = self.mat_mng.goto_project().create_project_get_name(project_category="新品定制")
-        self.mat_mng.goto_project().add_product_to_project(project_name)
+        self.mat_mng.goto_project().add_product_to_project(pro_name=project_name, pro_category="新品定制")
         time.sleep(2)
         count_before_delete = self.mat_mng.goto_material_manage().get_count_of_table()
         # 删除操作

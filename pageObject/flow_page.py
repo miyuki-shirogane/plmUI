@@ -77,9 +77,12 @@ class FlowPage(BasePage):
         expect.insert(1, expect[4])
         expect.pop(5)
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
-        ele = self.driver.find_element(By.XPATH, '//p[1]')
-        text = ele.text
-        WebDriverWait(self.driver, 10).until(lambda x: ele.text != text)
+        try:
+            ele = self.driver.find_element(By.XPATH, '//p[1]')
+            text = ele.text
+            WebDriverWait(self.driver, 10).until(lambda x: ele.text != text)
+        except:
+            time.sleep(3)
         return expect
 
     def get_flow_and_tasks(self) -> list:
