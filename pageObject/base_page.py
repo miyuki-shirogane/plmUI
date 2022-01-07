@@ -53,6 +53,18 @@ class BasePage:
         time.sleep(1)
         return MaterialCategoryPage(self.driver)
 
+    def goto_group_setting(self):
+        self.driver.find_element(By.XPATH, "//ul/div[5]//div[@role='button'][3]").click()
+        from pageObject.group_setting_page import GroupSettingPage
+        time.sleep(1)
+        return GroupSettingPage(self.driver)
+
+    def goto_flow(self):
+        self.driver.find_element(By.XPATH, "//ul/div[5]//div[@role='button'][5]").click()
+        from pageObject.flow_page import FlowPage
+        time.sleep(1)
+        return FlowPage(self.driver)
+
     def goto_project(self):
         self.driver.find_element(By.XPATH, "//ul/div[1]").click()
         from pageObject.project_page import ProjectPage

@@ -6,6 +6,6 @@ class BOMPage(BasePage):
     env = Environment()
     _base_url = env.url(module="bom")
 
-    def get_released_bom(self):
+    def get_product_of_released_bom(self):
         pass
 

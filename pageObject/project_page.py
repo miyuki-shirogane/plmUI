@@ -45,7 +45,6 @@ class ProjectPage(BasePage):
             lambda x: len(self.driver.find_elements(By.XPATH, '//div[label="立项文档"]//img')) > 1
         )
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
-        time.sleep(1)
         try:
             ele = self.driver.find_element(By.XPATH, '//tr[1]/td[1]')
             text = ele.text
@@ -80,6 +79,7 @@ class ProjectPage(BasePage):
             self.driver.find_element(By.XPATH, '//input[@name="versions"]').send_keys(material_version)
         self.driver.find_element(By.XPATH, '//button[span="保存"]').click()
         time.sleep(1)
+        return ProjectPage(self.driver)
 
     # 前置条件：project_category = 工艺优化
     def get_product_options(self, pro_name: str):
@@ -117,6 +117,7 @@ class ProjectPage(BasePage):
         self._fill_task_form(label_name="预计开始日期").send_keys(task_date)
         self._fill_task_form(label_name="预计结束日期").send_keys(task_date)
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
+        return ProjectPage(self.driver)
 
     def get_first_task_of_project(self, pro_name: str):
         self._go_to_detail_tab(pro_name=pro_name, tab_name="研发任务")
@@ -129,19 +130,30 @@ class ProjectPage(BasePage):
     2.进行中项目-任务，可以编辑、查看详情，详情内可以进一步维护BOM
     ）
     """
-    def get_len_acts_of_tasks(self):
+    def get_len_acts_of_tasks(self, pro_name: str):
+        self._go_to_detail_tab(pro_name=pro_name, tab_name="研发任务")
         acts = self.driver.find_elements(By.XPATH, '//tr[1]/td[last()]//button')
         return len(acts)
 
-    def create_bom(self, pro_name: str):
+    def create_bom(self, pro_name: str, create_time: int):
         mock = Mock()
-        bom_version = mock.mock_data(data_name="bom_version")
+        bom_versions = []
         self._go_to_detail_tab(pro_name=pro_name, tab_name="研发任务")
         self.driver.find_element(By.XPATH, '//tr[1]/td[last()]//button[@title="查看详情"]').click()
-        self.driver.find_element(By.XPATH, '//*[name()="svg"][@title="新增BOM"]').click()
-        self.driver.find_element(By.XPATH, '//input[@name="versions"]').send_keys(bom_version)
-        self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
-        return bom_version
+        for i in range(create_time):
+            bom_version = mock.mock_data(data_name="bom_version")
+            self.driver.find_element(By.XPATH, '//*[name()="svg"][@title="新增BOM"]').click()
+            self.driver.find_element(By.XPATH, '//input[@name="versions"]').send_keys(bom_version)
+            self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
+            bom_versions.append(bom_version)
+            i += 1
+        return bom_versions
+
+    def get_first_bom_of_project(self,pro_name: str):
+        self._go_to_detail_tab(pro_name=pro_name, tab_name="研发任务")
+        self.driver.find_element(By.XPATH, '//tr[1]/td[last()]//button[@title="查看详情"]').click()
+        res = self.driver.find_element(By.XPATH, '//div[h4="BOM版本号"]/following-sibling::div//p').text
+        return res
 
     def update_bom(self, pro_name: str):
         mock = Mock()
@@ -168,6 +180,7 @@ class ProjectPage(BasePage):
         ActionChains(self.driver).move_to_element(ele).perform()
         ele.find_element(By.XPATH, './/*[name()="svg"][@title="删除"]').click()
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
+        return ProjectPage(self.driver)
 
     def edit_material_of_bom(self, pro_name: str, add_times: int, delete_times: int):
         self._go_to_detail_tab(pro_name=pro_name, tab_name="研发任务")
@@ -187,6 +200,7 @@ class ProjectPage(BasePage):
             ele = self.driver.find_element(By.XPATH, '//button[span="确定"]')
             self.driver.execute_script("arguments[0].click();", ele)
             i += 1
+        return ProjectPage(self.driver)
 
     def fill_bom(self, pro_name: str, num_of_material: int):
         mock = Mock()
@@ -198,6 +212,7 @@ class ProjectPage(BasePage):
             self.driver.find_element(By.XPATH, f'//tbody/tr[{i+1}]//td[9]').send_keys(proportion)
             self.driver.find_element(By.XPATH, f'//tbody/tr[{i+1}]//td[10]').send_keys(research_unit)
         self.driver.find_element(By.XPATH, '//button[span="保存配方"]').click()
+        return ProjectPage(self.driver)
 
     def task_attachment(self, pro_name: str):
         mock = Mock()
@@ -212,10 +227,12 @@ class ProjectPage(BasePage):
             )) > 0
         )
         self.driver.find_element(By.XPATH, '//button[span="保存附件"]').click()
+        return ProjectPage(self.driver)
 
     def status_pending_to_inprocess(self, pro_name: str):
         self._go_to_detail_tab(pro_name=pro_name, tab_name="研发产品")
         self.driver.find_element(By.XPATH, '//button[span="启动项目"]').click()
+        return ProjectPage(self.driver)
 
     def status_inprocess_to_ended(self, pro_name: str, is_bom_released: bool):
         mock = Mock()
@@ -238,6 +255,7 @@ class ProjectPage(BasePage):
         else:
             pass
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
+        return ProjectPage(self.driver)
 
 
 if __name__ == "__main__":

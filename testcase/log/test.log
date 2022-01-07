@@ -1,3 +1,0 @@
-2022-01-07 13:28:28 [INFO] 
-expect_flow_and_tasks:['flow_name_XSfDtr', 'task_name_a_kETjUD', 'task_name_b_PZoNQB', 'task_name_c_kBu4wz', 'task_name_d_enofaQ'];
-real_flow_and_tasks:['flow_name_XSfDtr', 'task_name_a_kETjUD', 'task_name_b_PZoNQB', 'task_name_c_kBu4wz', 'task_name_d_enofaQ'] (test_flow.py:13)
