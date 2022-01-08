@@ -6,6 +6,8 @@
 # Author     ：10
 """
 import time
+from random import randint
+
 from selenium import webdriver
 from selenium.webdriver import Keys, ActionChains
 from selenium.webdriver.support import expected_conditions
@@ -80,7 +82,22 @@ def test_3():
 
 def test_4():
     driver = get_driver()
+    mock = Mock()
+    for i in range(2):
+        proportion = randint(1, 10)
+        research_unit = mock.mock_data("research_unit")
+        driver.find_element(By.XPATH, f'//tbody/tr[{i + 1}]//td[9]//input').send_keys(proportion)
+        driver.find_element(By.XPATH, f'//tbody/tr[{i + 1}]//td[10]//input').send_keys(research_unit)
+        i += 1
 
+def test_5():
+    driver = get_driver()
+    driver.find_element(By.XPATH, '//label[span="仅查看定版BOM"]//input').click()
+    WebDriverWait(driver, 10).until(
+        expected_conditions.presence_of_element_located((By.XPATH, '//tr[1]/th[1]'))
+    )
+    count = driver.find_element(By.XPATH, '//span[contains(text(),"共")]').text[2: -2]
+    print(count)
 
 
 

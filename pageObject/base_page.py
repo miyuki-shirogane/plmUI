@@ -88,6 +88,7 @@ class BasePage:
 
     # 获取alert信息
     def get_alert(self):
+        time.sleep(1)
         ele = self.driver.find_element(By.XPATH, '//div[@class="MuiAlert-message"]')
         alert = ele.text
         return alert

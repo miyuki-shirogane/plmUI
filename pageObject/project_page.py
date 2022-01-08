@@ -142,18 +142,27 @@ class ProjectPage(BasePage):
         self.driver.find_element(By.XPATH, '//tr[1]/td[last()]//button[@title="查看详情"]').click()
         for i in range(create_time):
             bom_version = mock.mock_data(data_name="bom_version")
-            self.driver.find_element(By.XPATH, '//*[name()="svg"][@title="新增BOM"]').click()
+            self.driver.find_element(By.XPATH, '//div[h4="BOM版本号"]//button').click()
             self.driver.find_element(By.XPATH, '//input[@name="versions"]').send_keys(bom_version)
             self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
             bom_versions.append(bom_version)
             i += 1
+            time.sleep(2)
         return bom_versions
 
     def get_first_bom_of_project(self,pro_name: str):
         self._go_to_detail_tab(pro_name=pro_name, tab_name="研发任务")
         self.driver.find_element(By.XPATH, '//tr[1]/td[last()]//button[@title="查看详情"]').click()
-        res = self.driver.find_element(By.XPATH, '//div[h4="BOM版本号"]/following-sibling::div//p').text
+        res = self.driver.find_element(By.XPATH, '//div[h4="BOM版本号"]/following-sibling::div/div[1]//p').text
         return res
+
+    def get_all_boms(self, pro_name: str):
+        self._go_to_detail_tab(pro_name=pro_name, tab_name="研发任务")
+        self.driver.find_element(By.XPATH, '//tr[1]/td[last()]//button[@title="查看详情"]').click()
+        boms = [i.text for i in self.driver.find_elements(
+            By.XPATH, '//div[h4="BOM版本号"]/following-sibling::div/div/p'
+        )]
+        return boms[::-1]
 
     def update_bom(self, pro_name: str):
         mock = Mock()
@@ -204,13 +213,14 @@ class ProjectPage(BasePage):
 
     def fill_bom(self, pro_name: str, num_of_material: int):
         mock = Mock()
-        proportion = randint(1, 10)
-        research_unit = mock.mock_data("research_unit")
         self._go_to_detail_tab(pro_name=pro_name, tab_name="研发任务")
         self.driver.find_element(By.XPATH, '//tr[1]/td[last()]//button[@title="查看详情"]').click()
         for i in range(num_of_material):
-            self.driver.find_element(By.XPATH, f'//tbody/tr[{i+1}]//td[9]').send_keys(proportion)
-            self.driver.find_element(By.XPATH, f'//tbody/tr[{i+1}]//td[10]').send_keys(research_unit)
+            proportion = randint(1, 10)
+            research_unit = mock.mock_data("research_unit")
+            self.driver.find_element(By.XPATH, f'//tbody/tr[{i+1}]//td[9]//input').send_keys(proportion)
+            self.driver.find_element(By.XPATH, f'//tbody/tr[{i+1}]//td[10]//input').send_keys(research_unit)
+            i += 1
         self.driver.find_element(By.XPATH, '//button[span="保存配方"]').click()
         return ProjectPage(self.driver)
 
