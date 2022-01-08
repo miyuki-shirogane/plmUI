@@ -38,4 +38,4 @@ fixed         - testcase/test_project_manage.py:111 TestProject.test_end_project
 
 Group setting页面， 删除逻辑还要补充更多的用例：\
 1.小组包含组员
-2.小组已被项目使用
+2.小组已被项目使用。
