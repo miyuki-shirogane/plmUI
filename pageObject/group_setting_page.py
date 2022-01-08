@@ -63,8 +63,9 @@ class GroupSettingPage(BasePage):
         text = ele.text
         ActionChains(self.driver).move_to_element(ele).perform()
         ele.find_element_by_xpath(
-            f"./following-sibling::div//*[name()='svg'][@title='删除']"
+            f".//*[name()='svg'][@title='删除']"
         ).click()
+        self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
         WebDriverWait(self.driver, 10).until(lambda x: ele.text != text)
 
     def update_group(self):

@@ -260,7 +260,7 @@ class ProjectPage(BasePage):
         )
         # 结项。填完结项说明、添加完文档后，依据是否有定版BOM，验证后面的页面交互
         if is_bom_released is True:
-            self.driver.find_element(By.XPATH, '//input[@name=""bom]').click()
+            self.driver.find_element(By.XPATH, '//input[@name="bom"]').click()
             self.driver.find_element(By.XPATH, '//div[@class="MuiAutocomplete-popper"]//li[1]').click()
         else:
             pass

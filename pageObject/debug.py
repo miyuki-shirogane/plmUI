@@ -92,12 +92,15 @@ def test_4():
 
 def test_5():
     driver = get_driver()
-    driver.find_element(By.XPATH, '//label[span="仅查看定版BOM"]//input').click()
     WebDriverWait(driver, 10).until(
-        expected_conditions.presence_of_element_located((By.XPATH, '//tr[1]/th[1]'))
+        expected_conditions.element_to_be_clickable((By.XPATH, '//button[span="修改流程"]'))
     )
-    count = driver.find_element(By.XPATH, '//span[contains(text(),"共")]').text[2: -2]
-    print(count)
+    ele = driver.find_element(By.XPATH, '//tr[1]/td[2]')
+    text = ele.text
+    driver.find_element(By.XPATH, '//button[span="修改流程"]').click()
+    update_task_name = "x"
+    self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
+    WebDriverWait(self.driver, 10).until(lambda x: ele.text != text)
 
 
 

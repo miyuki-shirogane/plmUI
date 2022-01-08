@@ -1,6 +1,8 @@
 import time
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 from pageObject.base_page import BasePage
 from utils.env import Environment
@@ -20,13 +22,11 @@ class MaterialCategoryPage(BasePage):
         self.driver.find_element(By.XPATH, f'//div[@class="MuiAutocomplete-popper"]//li[{pick_num_category_form}]')\
             .click()
         self.driver.find_element(By.XPATH, '//input[@name="name"]').send_keys(category_name)
+        WebDriverWait(self.driver, 10).until(
+            expected_conditions.element_to_be_clickable((By.XPATH, '//button[span="确定"]'))
+        )
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
-        try:
-            ele = self.driver.find_element(By.XPATH, '//tr[1]/td[1]')
-            text = ele.text
-            WebDriverWait(self.driver, 10).until(lambda x: ele.text != text)
-        except:
-            time.sleep(3)
+        time.sleep(2)
         return category_name
 
     # filter="物料属性"，list搜索，获取返回物料类别列表
@@ -50,7 +50,9 @@ class MaterialCategoryPage(BasePage):
         ele = self.driver.find_element(By.XPATH, '//input[@name="name"]')
         self.new_clear(ele)
         ele.send_keys(category)
-        time.sleep(1)
+        WebDriverWait(self.driver, 10).until(
+            expected_conditions.element_to_be_clickable((By.XPATH, '//button[span="确定"]'))
+        )
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
         time.sleep(2)
         return category

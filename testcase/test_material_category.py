@@ -25,7 +25,7 @@ class TestCreateMaterialCategory:
     caseB：创建物料类别、创建物料并引用之、删除。删除失败
     """
     def test_delete_material_category_a(self):
-        self.mat_cg.create_material_category_get_name()
+        self.mat_cg.create_material_category_get_name(randint(1, 4))
         time.sleep(1)
         count_before_delete = self.mat_cg.get_count_of_table()
         self.mat_cg.delete_material_category()

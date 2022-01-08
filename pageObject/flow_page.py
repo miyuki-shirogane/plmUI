@@ -99,10 +99,12 @@ class FlowPage(BasePage):
         WebDriverWait(self.driver, 10).until(
             expected_conditions.element_to_be_clickable((By.XPATH, '//button[span="修改流程"]'))
         )
+        elee = self.driver.find_element(By.XPATH, '//tr[1]/td[2]')
+        text = elee.text
         self.driver.find_element(By.XPATH, '//button[span="修改流程"]').click()
         update_task_name = self._input_task_name((ord("a"), 0))[0]
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
-        time.sleep(1)
+        time.sleep(3)
         return update_task_name
 
     def delete_flow(self):

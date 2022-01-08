@@ -55,7 +55,9 @@ class TestProject:
         assert_that(real, equal_to(expect))
 
     def test_check_task_act_buttons_under_inprocess(self):
-        name = self.pro_mng.create_project_get_name(project_category="新品定制")
+        self.pro_mng.goto_group_setting().add_group()
+        self.pro_mng.goto_group_setting().add_member()
+        name = self.pro_mng.goto_project().create_project_get_name(project_category="新品定制")
         ls = self.pro_mng.goto_flow().create_flow()
         flow = ls[0]
         real = self.pro_mng.goto_project().add_product_to_project(pro_name=name, pro_category="新品定制").\
