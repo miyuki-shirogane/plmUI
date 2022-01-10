@@ -92,9 +92,9 @@ def test_4():
 
 def test_5():
     driver = get_driver()
-    driver.implicitly_wait(10)
-    driver.find_element(By.XPATH, "//ul/div[1]").click()
-    driver.find_element(By.XPATH, '//button[span="项目立项"]').click()
+    WebDriverWait(driver, 10).until(
+        expected_conditions.
+    )
 
 
 

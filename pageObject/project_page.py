@@ -3,7 +3,7 @@ from random import randint
 
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from pageObject.base_page import BasePage
 from utils.env import Environment
@@ -18,7 +18,7 @@ class ProjectPage(BasePage):
         detail_enter_xpath = f'//td[text()="{pro_name}"]/ancestor::tr//button[@title="查看详情"]'
         self.driver.find_element(By.XPATH, detail_enter_xpath).click()
         WebDriverWait(self.driver, 10).until(
-            expected_conditions.element_to_be_clickable((By.XPATH, f'//button[span="{tab_name}"]'))
+            EC.element_to_be_clickable((By.XPATH, f'//button[span="{tab_name}"]'))
         )
         self.driver.find_element(By.XPATH, f'//button[span="{tab_name}"]').click()
 

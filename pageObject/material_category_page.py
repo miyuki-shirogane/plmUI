@@ -1,6 +1,5 @@
 import time
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -23,7 +22,7 @@ class MaterialCategoryPage(BasePage):
             .click()
         self.driver.find_element(By.XPATH, '//input[@name="name"]').send_keys(category_name)
         WebDriverWait(self.driver, 10).until(
-            expected_conditions.element_to_be_clickable((By.XPATH, '//button[span="确定"]'))
+            EC.element_to_be_clickable((By.XPATH, '//button[span="确定"]'))
         )
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
         time.sleep(2)
@@ -51,7 +50,7 @@ class MaterialCategoryPage(BasePage):
         self.new_clear(ele)
         ele.send_keys(category)
         WebDriverWait(self.driver, 10).until(
-            expected_conditions.element_to_be_clickable((By.XPATH, '//button[span="确定"]'))
+            EC.element_to_be_clickable((By.XPATH, '//button[span="确定"]'))
         )
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
         time.sleep(2)
