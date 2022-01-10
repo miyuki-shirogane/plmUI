@@ -21,7 +21,10 @@ class MaterialManagePage(BasePage):
         self.driver.find_element(By.XPATH, '//div[label="*物料名称"]/ancestor::div//input[@name="category"]').click()
 
         options = [i.text for i in self.driver.find_elements(By.XPATH, '//div[@class="MuiAutocomplete-popper"]//li')]
-        self.driver.find_element(By.XPATH, '//button[span="取消"]').click()
+        try:
+            self.driver.find_element(By.XPATH, '//form/following-sibling::button').click()
+        except:
+            self.driver.find_element(By.XPATH, '//button[span="取消"]').click()
         return options
 
     # 物料属性：产品，物料类别：Null。建一个 完事

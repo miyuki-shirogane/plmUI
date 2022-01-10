@@ -1,3 +1,6 @@
+import logging
+
+import pytest
 from hamcrest import *
 from pageObject.project_page import ProjectPage
 
@@ -5,6 +8,14 @@ from pageObject.project_page import ProjectPage
 class TestProject:
     def setup(self):
         self.pro_mng = ProjectPage()
+
+    @pytest.fixture(scope="function")
+    def add_group_and_member(self):
+        self.pro_mng = ProjectPage()
+        self.pro_mng.goto_group_setting().add_group()
+        self.pro_mng.goto_group_setting().add_member()
+        # yield
+        self.pro_mng.driver.quit()
 
     def test_create_project(self):
         expect = self.pro_mng.create_project_get_name(project_category="新品定制")
@@ -29,14 +40,13 @@ class TestProject:
         expect = "项目启动成功"
         assert_that(real, equal_to(expect))
 
-    # category = "upgrade",还没测，要等BOM那个函数写完，到时测试下
     def test_check_product_options(self):
         name = self.pro_mng.create_project_get_name(project_category="工艺优化")
         real = self.pro_mng.get_product_options(pro_name=name)
         expect = self.pro_mng.goto_bom().get_num_of_released_bom()
         assert_that(len(real), equal_to(expect))
 
-    def test_add_task(self):
+    def test_add_task(self, add_group_and_member):
         project = self.pro_mng.create_project_get_name(project_category="新品定制")
         ls = self.pro_mng.goto_flow().create_flow()
         flow = ls[0]
@@ -45,19 +55,17 @@ class TestProject:
         expect = ls[1]
         assert_that(real, equal_to(expect))
 
-    def test_check_task_act_buttons_under_pending(self):
+    def test_check_task_act_buttons_under_pending(self, add_group_and_member):
         name = self.pro_mng.create_project_get_name(project_category="新品定制")
         ls = self.pro_mng.goto_flow().create_flow()
         flow = ls[0]
-        real = self.pro_mng.goto_project().add_task_to_project(pro_name=name,flow_name=flow).\
+        real = self.pro_mng.goto_project().add_task_to_project(pro_name=name, flow_name=flow).\
             goto_project().get_len_acts_of_tasks(pro_name=name)
         expect = 1
         assert_that(real, equal_to(expect))
 
-    def test_check_task_act_buttons_under_inprocess(self):
-        self.pro_mng.goto_group_setting().add_group()
-        self.pro_mng.goto_group_setting().add_member()
-        name = self.pro_mng.goto_project().create_project_get_name(project_category="新品定制")
+    def test_check_task_act_buttons_under_inprocess(self, add_group_and_member):
+        name = self.pro_mng.create_project_get_name(project_category="新品定制")
         ls = self.pro_mng.goto_flow().create_flow()
         flow = ls[0]
         real = self.pro_mng.goto_project().add_product_to_project(pro_name=name, pro_category="新品定制").\
@@ -67,7 +75,7 @@ class TestProject:
         expect = 2
         assert_that(real, equal_to(expect))
 
-    def test_create_bom(self):
+    def test_create_bom(self, add_group_and_member):
         name = self.pro_mng.create_project_get_name(project_category="新品定制")
         ls = self.pro_mng.goto_flow().create_flow()
         flow = ls[0]
@@ -85,7 +93,7 @@ class TestProject:
     """
     def test_update_bom(self):
         name = self.pro_mng.get_list_n_column_value(n=1)
-        real = self.pro_mng.goto_project().update_bom(pro_name=name)
+        real = self.pro_mng.update_bom(pro_name=name)
         expect = self.pro_mng.goto_project().get_first_bom_of_project(pro_name=name)
         assert_that(real, equal_to(expect))
 

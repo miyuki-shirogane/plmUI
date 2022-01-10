@@ -1,0 +1,1 @@
+[32mINFO    [0m root:test_material_category.py:34 count_before_delete:18;count_after_delete:17

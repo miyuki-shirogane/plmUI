@@ -2,6 +2,7 @@ import time
 
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 from pageObject.base_page import BasePage
@@ -34,15 +35,19 @@ class GroupSettingPage(BasePage):
         self.driver.find_element(
             By.XPATH, '//div[h4="配置组员"]/ancestor::div//tbody/tr[1]//button'
         ).click()
-        self.driver.find_element(By.XPATH, '//div[h4="配置组员"]/button').click()
-        ele = self.driver.find_element(
-            By.XPATH, '//div[h4="配置组员"]/ancestor::div//tbody/tr[1]//td[1]'
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '//div[h4="配置组员"]//button'))
         )
-        return ele.text
+        res = self.driver.find_element(
+            By.XPATH, '//div[h4="配置组员"]/ancestor::div//tbody/tr[1]//td[1]'
+        ).text
+        self.driver.find_element(By.XPATH, '//div[h4="配置组员"]//button').click()
+        time.sleep(1)
+        return res
 
     # 这个表格最新的记录新增在底部，所以不用base_page的通用method
     def get_new_member(self):
-        ele = self.driver.find_element(By.XPATH, f'//tr[last()]/td[1]')
+        ele = self.driver.find_element(By.XPATH, '//tr[last()]/td[1]')
         return ele.text
 
     def get_new_group(self):
@@ -66,7 +71,11 @@ class GroupSettingPage(BasePage):
             f".//*[name()='svg'][@title='删除']"
         ).click()
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
-        WebDriverWait(self.driver, 10).until(lambda x: ele.text != text)
+        try:
+            res = self.get_alert()
+            return res
+        except:
+            WebDriverWait(self.driver, 10).until(lambda x: ele.text != text)
 
     def update_group(self):
         mock = Mock()

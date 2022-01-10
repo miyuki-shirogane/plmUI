@@ -30,6 +30,7 @@ class BasePage:
             if self._base_url is not None:
                 self.driver.get(self._base_url)
                 env = Environment()
+                self.driver.maximize_window()
                 self.driver.find_element(By.XPATH, "//input[@name='account']").send_keys(env.account())
                 self.driver.find_element(By.XPATH, "//input[@name='password']").send_keys(env.password())
                 self.driver.find_element(By.CSS_SELECTOR, ".MuiButton-label").click()

@@ -11,6 +11,9 @@ class BOMPage(BasePage):
     _base_url = env.url(module="bom")
 
     def get_num_of_released_bom(self):
+        WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, '//tr[1]/th[1]'))
+        )
         self.driver.find_element(By.XPATH, '//label[span="仅查看定版BOM"]//input').click()
         WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.XPATH, '//tr[1]/th[1]'))

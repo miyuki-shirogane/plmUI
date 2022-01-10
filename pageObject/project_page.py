@@ -150,7 +150,7 @@ class ProjectPage(BasePage):
             time.sleep(2)
         return bom_versions
 
-    def get_first_bom_of_project(self,pro_name: str):
+    def get_first_bom_of_project(self, pro_name: str):
         self._go_to_detail_tab(pro_name=pro_name, tab_name="研发任务")
         self.driver.find_element(By.XPATH, '//tr[1]/td[last()]//button[@title="查看详情"]').click()
         res = self.driver.find_element(By.XPATH, '//div[h4="BOM版本号"]/following-sibling::div/div[1]//p').text
@@ -178,6 +178,9 @@ class ProjectPage(BasePage):
         self.new_clear(input_ele)
         input_ele.send_keys(bom_version)
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
+        WebDriverWait(self.driver, 10).until(
+            lambda x: self.detect_num_of_dialog(expect=0) == True
+        )
         return bom_version
 
     def delete_bom(self, pro_name: str):

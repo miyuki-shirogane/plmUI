@@ -44,5 +44,5 @@ class TestCreateMaterialCategory:
         logging.info(f'count_before_delete:{count_before_delete};count_after_delete:{count_after_delete}')
         assert_that(count_before_delete, equal_to(count_after_delete))
 
-    def teardown(self):
+    def teardown_class(self):
         self.mat_cg.driver.quit()

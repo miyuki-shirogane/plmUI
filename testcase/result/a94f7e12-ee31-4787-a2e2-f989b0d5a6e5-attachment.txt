@@ -1,0 +1,1 @@
+[32mINFO    [0m root:test_material_manage.py:28 create_name:name_5PtXpZ;get_name:name_5PtXpZ
