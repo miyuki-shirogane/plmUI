@@ -1,3 +1,0 @@
-[32mINFO    [0m root:test_flow.py:13 
-expect_flow_and_tasks:['flow_name_Jl1z6Y', 'task_name_a_enjLuo', 'task_name_b_MGuUsT', 'task_name_c_Gcp5Mq', 'task_name_d_C4LfZh'];
-real_flow_and_tasks:['flow_name_Jl1z6Y', 'task_name_a_enjLuo', 'task_name_b_MGuUsT', 'task_name_c_Gcp5Mq', 'task_name_d_C4LfZh']

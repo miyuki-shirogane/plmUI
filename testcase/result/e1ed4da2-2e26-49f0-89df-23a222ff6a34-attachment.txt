@@ -1,1 +1,0 @@
-[32mINFO    [0m root:test_material_manage.py:22 actual_options:['category_3hKn1C', 'category_name_8RWp5q', 'category_name_cus1gr'];category_options:['category_3hKn1C', 'category_name_8RWp5q', 'category_name_cus1gr']

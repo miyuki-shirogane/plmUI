@@ -1,1 +1,0 @@
-[32mINFO    [0m root:test_material_manage.py:53 count_before_delete:64;count_after_delete:63

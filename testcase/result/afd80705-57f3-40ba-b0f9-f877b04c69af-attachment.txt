@@ -1,1 +1,0 @@
-[32mINFO    [0m root:test_material_manage.py:22 actual_options:['category_gkarmB', 'category_GNZsL8', 'category_name_fUOgdQ', 'category_name_fF4L87'];category_options:['category_gkarmB', 'category_GNZsL8', 'category_name_fUOgdQ', 'category_name_fF4L87']
