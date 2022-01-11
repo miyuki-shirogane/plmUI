@@ -199,12 +199,15 @@ class ProjectPage(BasePage):
         self.driver.find_element(By.XPATH, '//tr[1]/td[last()]//button[@title="查看详情"]').click()
         for i in range(add_times):
             self.driver.find_element(
-                By.XPATH, '//h4[contains(text(),"物料列表")]/following-sibling::button[1]'
+                By.XPATH, '//button[span="添加物料"]'
             ).click()
             self.driver.find_element(By.XPATH, '//input[@name="material"]').click()
             self.driver.find_element(By.XPATH, f'//div[@class="MuiAutocomplete-popper"]//li[{i+1}]').click()
             ele = self.driver.find_element(By.XPATH, '//button[span="确定"]')
             self.driver.execute_script("arguments[0].click();", ele)
+            WebDriverWait(self.driver, 10).until(
+                lambda x: self.detect_num_of_dialog(expect=0) == True
+            )
             i += 1
         for i in range(delete_times):
             time.sleep(1)

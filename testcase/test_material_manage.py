@@ -4,6 +4,8 @@
 """
 import logging
 import time
+
+import allure
 import pytest
 from hamcrest import *
 from pageObject.material_manage_page import MaterialManagePage
@@ -14,6 +16,7 @@ class TestMaterial:
         print("setup")
         self.mat_mng = MaterialManagePage()
 
+    @allure.testcase(url="https://teletraan.coding.net/p/auto/testing/cases/14", name="新增物料表单交互_droplist联动查询")
     @pytest.mark.parametrize("n", [1, 2, 3, 4], ids=["产品", "原辅料", "中间体", "菌种"])
     def test_get_option(self, n: int):
         actual_options = self.mat_mng.goto_material_category().get_materials_category_search(pick_num_category_filter=n)

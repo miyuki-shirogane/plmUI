@@ -90,12 +90,4 @@ def test_4():
         driver.find_element(By.XPATH, f'//tbody/tr[{i + 1}]//td[10]//input').send_keys(research_unit)
         i += 1
 
-def test_5():
-    driver = get_driver()
-    WebDriverWait(driver, 10).until(
-        expected_conditions.
-    )
-
-
-
 
