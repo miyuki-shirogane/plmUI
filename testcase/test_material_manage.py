@@ -25,12 +25,14 @@ class TestMaterial:
         logging.info(f'actual_options:{actual_options};category_options:{category_options}')
         assert_that(actual_options, equal_to(category_options))
 
+    @allure.testcase(url="https://teletraan.coding.net/p/auto/testing/cases/15", name="新增物料")
     def test_create_material(self):
         create_name = self.mat_mng.create_material_get_name()
         get_name = self.mat_mng.get_list_n_column_value(1)
         logging.info(f'create_name:{create_name};get_name:{get_name}')
         assert_that(create_name, equal_to(get_name))
 
+    @allure.testcase(url="https://teletraan.coding.net/p/auto/testing/cases/16", name="更新物料")
     def test_update_material(self):
         update_column_value = self.mat_mng.update_material_get_name("specification")
         get_column_value = self.mat_mng.goto_material_manage().get_list_n_column_value(7)
@@ -46,6 +48,8 @@ class TestMaterial:
     1.case_a:创建物料A，删除，预期删除成功，断言方式就看物料list个数吧
     2.case_b:创建项目(新品研发)并新增产品（物料B），删除，预期删除失败，断言方式同上
     """
+
+    @allure.testcase(url="https://teletraan.coding.net/p/auto/testing/cases/17", name="删除物料_正常")
     def test_delete_material_a(self):
         self.mat_mng.create_material_get_name()
         time.sleep(1)
@@ -56,6 +60,7 @@ class TestMaterial:
         logging.info(f'count_before_delete:{count_before_delete};count_after_delete:{count_after_delete}')
         assert_that(count_before_delete-1, equal_to(count_after_delete))
 
+    @allure.testcase(url="https://teletraan.coding.net/p/auto/testing/cases/18", name="删除物料_被引用")
     def test_delete_material_b(self):
         # 前置条件
         project_name = self.mat_mng.goto_project().create_project_get_name(project_category="新品定制")
