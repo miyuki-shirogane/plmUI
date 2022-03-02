@@ -82,12 +82,8 @@ def test_3():
 
 def test_4():
     driver = get_driver()
-    mock = Mock()
-    for i in range(2):
-        proportion = randint(1, 10)
-        research_unit = mock.mock_data("research_unit")
-        driver.find_element(By.XPATH, f'//tbody/tr[{i + 1}]//td[9]//input').send_keys(proportion)
-        driver.find_element(By.XPATH, f'//tbody/tr[{i + 1}]//td[10]//input').send_keys(research_unit)
-        i += 1
+    driver.find_element(
+        By.XPATH, "//span[contains(text(),'企业标识符')]/parent::label/following-sibling::div//input"
+    ).send_keys("env.company_uid()")
 
 
