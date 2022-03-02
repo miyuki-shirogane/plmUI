@@ -1,3 +1,4 @@
+import os
 import string
 import random
 import time
@@ -14,7 +15,8 @@ class Mock:
         return time.strftime('%Y%m%d', time.localtime(time.time()))
 
     def attachment_path(self, attachment_name: str):
-        path = '/Library/Python/pro/uiProject/utils/attachment/' + attachment_name
+        root_path = os.path.abspath(os.path.join(os.getcwd(), ".."))
+        path = os.path.join(root_path, "utils/attachment/" + attachment_name)
         return path
 
 

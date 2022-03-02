@@ -8,12 +8,16 @@ cf.read(configPath, encoding='UTF-8')
 
 pick = cf.get("pick", "env")
 environment = cf.get(pick, "env")
+companyUID = cf.get(pick, "companyUID")
 account = cf.get(pick, "account")
 password = cf.get(pick, "password")
 
 class Environment:
     def url(self, module: str):
         return "https://" + environment + ".teletraan.io/subapp/plm/base/" + module
+
+    def company_uid(self):
+        return companyUID
 
     def account(self):
         return account

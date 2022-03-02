@@ -31,6 +31,9 @@ class BasePage:
                 self.driver.get(self._base_url)
                 env = Environment()
                 self.driver.maximize_window()
+                self.driver.find_element(
+                    By.XPATH, "//span[contains(text(),'企业标识符')]/parent::label/following-sibling::div//input"
+                ).send_keys(env.company_uid())
                 self.driver.find_element(By.XPATH, "//input[@name='account']").send_keys(env.account())
                 self.driver.find_element(By.XPATH, "//input[@name='password']").send_keys(env.password())
                 self.driver.find_element(By.CSS_SELECTOR, ".MuiButton-label").click()
