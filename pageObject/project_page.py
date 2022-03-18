@@ -277,5 +277,3 @@ class ProjectPage(BasePage):
 if __name__ == "__main__":
     ck = ProjectPage()
     ck.task_attachment(pro_name="project_name_70SIK8")
-    # ck.edit_material_of_bom(pro_name="project_name_70SIK8", add_times=2, delete_times=0)
-    # ck.add_task_to_project(pro_name="project_name_BmZgac", flow_name="flow_name_5b7cqm")
