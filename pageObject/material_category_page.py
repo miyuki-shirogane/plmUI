@@ -35,7 +35,8 @@ class MaterialCategoryPage(BasePage):
             .click()
         self.driver.find_element(By.XPATH, '//button[span="查询"]').click()
         time.sleep(2)
-        return [i.text for i in self.driver.find_elements(By.XPATH, '//tr/td[2]')]
+        # return [i.text for i in self.driver.find_elements(By.XPATH, '//tr/td[2]')]
+        return MaterialCategoryPage(self.driver)
 
     def get_first_material_category_name(self):
         first_material_category_name = self.driver.find_element(By.XPATH, '//tr[1]/td[2]').text

@@ -19,11 +19,12 @@ class TestMaterial:
     @allure.testcase(url="https://teletraan.coding.net/p/auto/testing/cases/14", name="新增物料表单交互_droplist联动查询")
     @pytest.mark.parametrize("n", [1, 2, 3, 4], ids=["产品", "原辅料", "中间体", "菌种"])
     def test_get_option(self, n: int):
-        actual_options = self.mat_mng.goto_material_category().get_materials_category_search(pick_num_category_filter=n)
+        actual_options = self.mat_mng.goto_material_category().\
+            get_materials_category_search(pick_num_category_filter=n).get_count_of_table()
         category_options = self.mat_mng.goto_material_manage().create_material_form_get_category(
             pick_num_material_form=n)
         logging.info(f'actual_options:{actual_options};category_options:{category_options}')
-        assert_that(actual_options, equal_to(category_options))
+        assert_that(actual_options, equal_to(len(category_options)))
 
     @allure.testcase(url="https://teletraan.coding.net/p/auto/testing/cases/15", name="新增物料")
     def test_create_material(self):
