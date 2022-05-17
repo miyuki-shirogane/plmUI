@@ -179,7 +179,7 @@ class ProjectPage(BasePage):
         input_ele.send_keys(bom_version)
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
         WebDriverWait(self.driver, 10).until(
-            lambda x: self.detect_num_of_dialog(expect=0) == True
+            lambda x: self.detect_num_of_dialog(expect=0) is True
         )
         return bom_version
 
@@ -206,7 +206,7 @@ class ProjectPage(BasePage):
             ele = self.driver.find_element(By.XPATH, '//button[span="确定"]')
             self.driver.execute_script("arguments[0].click();", ele)
             WebDriverWait(self.driver, 10).until(
-                lambda x: self.detect_num_of_dialog(expect=0) == True
+                lambda x: self.detect_num_of_dialog(expect=0) is True
             )
             i += 1
         for i in range(delete_times):
