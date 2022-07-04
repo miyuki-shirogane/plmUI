@@ -2,6 +2,7 @@
 <details>
   <summary>目录</summary>
   <ol>
+    <li><a href="#如何使用">如何使用</a></li>
     <li>
       <a href="#项目介绍">项目介绍</a>
       <ul>
