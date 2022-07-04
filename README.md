@@ -9,8 +9,28 @@
         <li><a href="#实现细节">实现细节</a></li>
       </ul>
     </li>
+    <li><a href="#效果展示">效果展示</a></li>
   </ol>
 </details>
+
+
+
+<!-- HOW TO USE -->
+
+## 如何使用
+
+**0.安装依赖库**
+
+```shell
+pip install install -r requirements.txt
+```
+
+**1. 进入测试用例目录执行用例**
+
+```shell
+cd testcase
+pytest -vs # 或使用其他需要的命令行参数
+```
 
 <!-- ABOUT THE PROJECT -->
 
@@ -58,3 +78,8 @@ main.click_ph_link().get_text()
 project_name = self.group.add_group().goto_project().create_project_get_name(project_category="新品定制")
 ```
 能够相对清晰的看出做了什么操作（添加group,跳转至project页面，创建类型为"新品定制"的project，并获得name），提高了代码可读性，易于维护。
+
+## 效果展示
+
+主要结合allure以测试报告网页的形式输出，这里截图如下：
+![截图](img.png)
