@@ -32,9 +32,13 @@ class ProjectPage(BasePage):
         self.driver.find_element(By.XPATH, '//button[span="项目立项"]').click()
         self.driver.find_element(By.XPATH, '//input[@name="name"]').send_keys(project_name)
         self.driver.find_element(By.XPATH, '//input[@name="code"]').send_keys(project_code)
-        self.driver.find_element(By.XPATH, '//div[label="*项目名称"]/ancestor::div//input[@name="projectGroup"]').click()
+        self.driver.find_element(
+            By.XPATH, '//div[label="*项目名称"]/parent::div/parent::div//input[@name="projectGroup"]'
+        ).click()
         self.driver.find_element(By.XPATH, '//div[@class="MuiAutocomplete-popper"]//li[1]').click()
-        self.driver.find_element(By.XPATH, '//div[label="*项目名称"]/ancestor::div//input[@name="category"]').click()
+        self.driver.find_element(
+            By.XPATH, '//div[label="*项目名称"]/parent::div/parent::div//input[@name="category"]'
+        ).click()
         self.driver.find_element(By.XPATH, f'//span[contains(text(),"{project_category}")]').click()
         self.driver.find_element(
             By.XPATH, '//label[contains(text(),"计划开始日期")]/parent::div//input'
@@ -56,7 +60,7 @@ class ProjectPage(BasePage):
     # 创建项目表单，执行小组下拉选项获取
     def create_project_form_get_group_options(self):
         self.driver.find_element(By.XPATH, '//button[span="项目立项"]').click()
-        self.driver.find_element(By.XPATH, '//div[label="*项目名称"]/ancestor::div//input[@name="projectGroup"]').click()
+        self.driver.find_element(By.XPATH, '//div[h4="项目立项"]/parent::div//input[@name="projectGroup"]').click()
         options = [i.text for i in self.driver.find_elements(By.XPATH, '//div[@class="MuiAutocomplete-popper"]//li')]
         self.driver.find_element(By.XPATH, '//button[span="取消"]').click()
         return options
@@ -144,6 +148,8 @@ class ProjectPage(BasePage):
             bom_version = mock.mock_data(data_name="bom_version")
             self.driver.find_element(By.XPATH, '//div[h4="BOM版本号"]//button').click()
             self.driver.find_element(By.XPATH, '//input[@name="versions"]').send_keys(bom_version)
+            self.driver.find_element(By.XPATH, '// div[h4 = "新增BOM版本号"]').click()
+            time.sleep(1)
             self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
             bom_versions.append(bom_version)
             i += 1
@@ -177,6 +183,9 @@ class ProjectPage(BasePage):
         input_ele = self.driver.find_element(By.XPATH, '//input[@name="versions"]')
         self.new_clear(input_ele)
         input_ele.send_keys(bom_version)
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '//button[span="确定"]'))
+        )
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
         WebDriverWait(self.driver, 10).until(
             lambda x: self.detect_num_of_dialog(expect=0) is True

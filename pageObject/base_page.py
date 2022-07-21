@@ -2,6 +2,7 @@ import time
 from selenium import webdriver
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
 
 from utils.env import Environment
 
@@ -28,18 +29,20 @@ class BasePage:
             self.driver = webdriver.Chrome()
             self.driver.implicitly_wait(10)
             if self._base_url is not None:
-                self.driver.get(self._base_url)
                 env = Environment()
+                self.driver.get(env.adress())
                 self.driver.maximize_window()
-                self.driver.find_element(By.XPATH, "//input[@name='companyUID']").send_keys(env.company_uid())
+                self.driver.find_element(By.XPATH, "//input[@name='tenantCode']").send_keys(env.tenant_code())
                 self.driver.find_element(By.XPATH, "//input[@name='account']").send_keys(env.account())
                 self.driver.find_element(By.XPATH, "//input[@name='password']").send_keys(env.password())
-                self.driver.find_element(By.CSS_SELECTOR, ".MuiButton-label").click()
+                self.driver.find_element(By.XPATH, "//button[@type='submit']").click()
+                WebDriverWait(self.driver, 10).until(lambda x: self.driver.current_url == env.adress(path="dashboard"))
+                self.driver.get(self._base_url)
             else:
                 pass
 
     def goto_bom(self):
-        self.driver.find_element(By.XPATH, "//ul/div[2]").click()
+        self.driver.find_element(By.XPATH, '//div[span="BOM管理"]').click()
         from pageObject.bom_page import BOMPage
         return BOMPage(self.driver)
 
@@ -68,18 +71,21 @@ class BasePage:
         return FlowPage(self.driver)
 
     def goto_project(self):
-        self.driver.find_element(By.XPATH, "//ul/div[1]").click()
+        self.driver.find_element(By.XPATH, '//div[span="项目管理"]').click()
         from pageObject.project_page import ProjectPage
         time.sleep(1)
         return ProjectPage(self.driver)
 
     def goto_file(self):
-        self.driver.find_element(By.XPATH, "//ul/div[3]").click()
+        self.driver.find_element(By.XPATH, '//div[span="文档管理"]').click()
         from pageObject.document_page import DocumentPage
         return DocumentPage(self.driver)
 
     def get_count_of_table(self):
-        count = self.driver.find_element(By.XPATH, '//span[contains(text(),"共")]').text[2: -2]
+        try:
+            count = self.driver.find_element(By.XPATH, '//span[contains(text(),"共")]').text[2: -2]
+        except:
+            count = 0
         return int(count)
 
     # 查询返回第一行数据第n个column的value;理论上n要填写的是int型，但考虑到可能会有"最后一个元素"这种特殊需求，所以不限制数据类型

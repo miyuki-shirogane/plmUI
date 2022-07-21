@@ -20,6 +20,8 @@ class GroupSettingPage(BasePage):
         group_name = mock.mock_data(data_name="group")
         self.driver.find_element(By.XPATH, '//*[name()="svg"][@title="新增小组"]').click()
         self.driver.find_element(By.XPATH, '//input[@name="name"]').send_keys(group_name)
+        self.driver.find_element(By.XPATH, '//div[h4="新增小组"]').click()
+        time.sleep(1)
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
         try:
             ele = self.driver.find_element(By.XPATH, '//div[h6="小组列表"]/following-sibling::div[2]/div[1]')

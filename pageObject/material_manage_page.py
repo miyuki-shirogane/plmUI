@@ -15,10 +15,10 @@ class MaterialManagePage(BasePage):
     def create_material_form_get_category(self, pick_num_material_form: int):
         self.driver.find_element(By.XPATH, '//button[span="新增物料"]').click()
         self.driver.find_element(By.XPATH,
-                                 '//div[label="*物料名称"]/ancestor::div//input[@name="property"]').click()  # 物料属性
+                                 '//div[h4="新增物料"]/parent::div//input[@name="property"]').click()  # 物料属性
         self.driver.find_element(By.XPATH,
                                  f'//div[@class="MuiAutocomplete-popper"]//li[{pick_num_material_form}]').click()
-        self.driver.find_element(By.XPATH, '//div[label="*物料名称"]/ancestor::div//input[@name="category"]').click()
+        self.driver.find_element(By.XPATH, '//div[h4="新增物料"]/parent::div//input[@name="category"]').click()
 
         options = [i.text for i in self.driver.find_elements(By.XPATH, '//div[@class="MuiAutocomplete-popper"]//li')]
         try:
@@ -40,7 +40,7 @@ class MaterialManagePage(BasePage):
         self.driver.find_element(By.XPATH, '//input[@name="versions"]').send_keys(material_version)
         self.driver.find_element(By.XPATH, '//input[@name="unit"]').send_keys(material_unit)
         self.driver.find_element(By.XPATH,
-                                 '//div[label="*物料名称"]/ancestor::div//input[@name="property"]').click()  # 物料属性
+                                 '//div[h4="新增物料"]/parent::div//input[@name="property"]').click()  # 物料属性
         self.driver.find_element(By.XPATH, '//div[@class="MuiAutocomplete-popper"]//li[1]').click()
         self.driver.find_element(By.XPATH, '//button[span="确定"]').click()
         try:
@@ -83,7 +83,7 @@ class MaterialManagePage(BasePage):
         self.driver.find_element(By.XPATH, '//input[@name="versions"]').send_keys(material_version)
         self.driver.find_element(By.XPATH, '//input[@name="unit"]').send_keys(material_unit)
         self.driver.find_element(By.XPATH,
-                                 '//div[label="*物料名称"]/ancestor::div//input[@name="property"]').click()  # 物料属性
+                                 '//div[h4="新增物料"]/parent::div//input[@name="property"]').click()  # 物料属性
         self.driver.find_element(By.XPATH, '//div[@class="MuiAutocomplete-popper"]//li[1]').click()
         self.driver.find_element(By.XPATH, '//input[@name="category"]').click()
         self.driver.find_element(By.XPATH, f'//span[contains(text(), "{category}")]').click()

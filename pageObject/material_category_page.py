@@ -17,7 +17,7 @@ class MaterialCategoryPage(BasePage):
         mock = Mock()
         category_name = mock.mock_data('category_name')
         self.driver.find_element(By.XPATH, '//button[span="新增物料类别"]').click()
-        self.driver.find_element(By.XPATH, '//div[label="*物料类别"]/ancestor::div//input[@name="property"]').click()
+        self.driver.find_element(By.XPATH, '//div[h4="新增物料类别"]/parent::div//input[@name="property"]').click()
         self.driver.find_element(By.XPATH, f'//div[@class="MuiAutocomplete-popper"]//li[{pick_num_category_form}]')\
             .click()
         self.driver.find_element(By.XPATH, '//input[@name="name"]').send_keys(category_name)

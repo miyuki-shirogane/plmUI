@@ -44,8 +44,6 @@ def input_task_name(*args):
 
 def test():
     driver = get_driver()
-    driver.find_element(By.XPATH, '//button[span="确定"]').click()
-    # 写入一个显式等待，直到后面页面的表格中刷新出最新的物料名称："名称"
-
-    res = driver.find_element(By.XPATH, '//tr[1]/td[1]').text
-    print(res)
+    driver.find_element(
+        By.XPATH, '//label[contains(text(),"立项文档")]/parent::div//input'
+    ).send_keys("/Library/Python/pro/uiProject/utils/attachment/create_project.jpeg")

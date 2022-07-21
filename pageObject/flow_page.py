@@ -89,7 +89,9 @@ class FlowPage(BasePage):
         WebDriverWait(self.driver, 10).until(
             expected_conditions.element_to_be_clickable((By.XPATH, '//button[span="新增流程"]'))
         )
-        real = [self.driver.find_element(By.XPATH, '//p[1]').text]
+        real = [self.driver.find_element(
+            By.XPATH, '//input[@type="search"]/parent::div/parent::div/parent::div/following-sibling::div//p[1]'
+        ).text]
         tasks = [i.text for i in self.driver.find_elements(By.XPATH, '//tr/td[2]')]
         real.extend(tasks)
         return real
@@ -109,7 +111,9 @@ class FlowPage(BasePage):
         WebDriverWait(self.driver, 10).until(
             expected_conditions.element_to_be_clickable((By.XPATH, '//button[span="新增流程"]'))
         )
-        ele = self.driver.find_element(By.XPATH, '//p[1]')
+        ele = self.driver.find_element(
+            By.XPATH, '//input[@type="search"]/parent::div/parent::div/parent::div/following-sibling::div//p[1]'
+        )
         text = ele.text
         ActionChains(self.driver).move_to_element(ele).perform()
         ele.find_element(By.XPATH,
